@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f9839ff07fc3994aa17c3c6b5ecfd28, type: 3}
+  m_Name: MainMenuTexts
+  m_EditorClassIdentifier: Assembly-CSharp-firstpass::PixelCrushers.Wrappers.TextTable
+  m_languageKeys:
+  - Default
+  - ru
+  - es
+  m_languageValues: 000000000100000002000000
+  m_fieldKeys: 0100000002000000030000000400000005000000
+  m_fieldValues:
+  - m_fieldName: settings_lang
+    m_keys: 000000000100000002000000
+    m_values:
+    - Language
+    - "\u042F\u0437\u044B\u043A"
+    - Idioma
+  - m_fieldName: mainmenu_settings
+    m_keys: 000000000200000001000000
+    m_values:
+    - Settings
+    - ' Ajustes'
+    - "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438"
+  - m_fieldName: mainmenu_play
+    m_keys: 000000000100000002000000
+    m_values:
+    - Play
+    - "\u0418\u0433\u0440\u0430\u0442\u044C"
+    - Jugar
+  - m_fieldName: mainmenu_exit
+    m_keys: 000000000100000002000000
+    m_values:
+    - Exit
+    - "\u0412\u044B\u0439\u0442\u0438"
+    - Salida
+  - m_fieldName: mainmenu_back
+    m_keys: 000000000100000002000000
+    m_values:
+    - Back
+    - "\u041D\u0430\u0437\u0430\u0434"
+    - "Atr\xE1s"
+  m_nextLanguageID: 4
+  m_nextFieldID: 6

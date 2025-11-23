@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5d763c3aa41f1446b17abcf05cc424d, type: 3}
+  m_Name: QuestRegistry
+  m_EditorClassIdentifier: Assembly-CSharp::QuestRegistry
+  quests:
+  - {fileID: 11400000, guid: b4f594cf37f508e459356155f0a050d8, type: 2}
+  - {fileID: 11400000, guid: 8717a754c37b48c46887cc86efe695f3, type: 2}
+  - {fileID: 11400000, guid: e0fd27f7ba94c014eb136485481a4024, type: 2}

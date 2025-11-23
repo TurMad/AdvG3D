@@ -1,0 +1,1 @@
+public enum ConditionType { QuestCompleted, BuildingConstructed, ItemPurchased }
