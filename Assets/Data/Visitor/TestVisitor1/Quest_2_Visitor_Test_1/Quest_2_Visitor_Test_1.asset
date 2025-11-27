@@ -15,6 +15,8 @@ MonoBehaviour:
   id: Quest_2_Visitor_Test_1
   title: "\u041A\u0432\u0435\u0441\u0442 2 \u043F\u0435\u0440\u0432\u043E\u0433\u043E
     \u043F\u043E\u0441."
-  kind: 0
+  travelHours: 15
+  executeHours: 1
+  notifyHours: 1
   baseGold: 100
   unlockConditions: []

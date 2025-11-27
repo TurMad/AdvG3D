@@ -23,7 +23,8 @@ public class  QuestStateDTO
 {
     public string id;
     public int tradedGold;    
-    public QuestStatus status;     
+    public QuestStatus status; 
+    public float travelElapsedSeconds;
 }
 
 [Serializable]

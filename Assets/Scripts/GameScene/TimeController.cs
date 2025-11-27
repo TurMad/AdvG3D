@@ -12,9 +12,10 @@ public class TimeController : MonoBehaviour
     [Header("Config")]
     [SerializeField] int startHour = 8;
     [SerializeField] int endHour = 24;
-    [SerializeField] float realSecondsPerGameHour = 5f; // скорость: каждые 5 секунд +1 час
+    [SerializeField] float realSecondsPerGameHour = 5f; 
 
     float timer;
+    
 
     void Start()
     {
@@ -23,6 +24,8 @@ public class TimeController : MonoBehaviour
             GameRepository.Data.hour = startHour;
 
         UpdateUI();
+        nextDayButton.onClick.RemoveAllListeners();
+        nextDayButton.onClick.AddListener(OnClickNextDay);
         nextDayButton.interactable = false;
     }
 
@@ -31,6 +34,7 @@ public class TimeController : MonoBehaviour
         if (GameRepository.Data.hour >= endHour)
         {
             nextDayButton.interactable = true;
+            QuestPathsManager.Instance.PauseAllPaths();
             return;
         }
 
@@ -39,11 +43,13 @@ public class TimeController : MonoBehaviour
         {
             timer = 0;
             GameRepository.Data.hour++;
+            AdvanceQuestTravelProgressOneHour();
 
             if (GameRepository.Data.hour >= endHour)
                 GameRepository.Data.hour = endHour;
 
             UpdateUI();
+            GameRepository.Save(); 
         }
     }
 
@@ -56,6 +62,7 @@ public class TimeController : MonoBehaviour
 
         nextDayButton.interactable = false;
         UpdateUI();
+        QuestPathsManager.Instance.ResumeAllPaths();
     }
 
     void UpdateUI()
@@ -65,5 +72,19 @@ public class TimeController : MonoBehaviour
 
         if (hourText != null)
             hourText.text = $"{GameRepository.Data.hour}:00";
+    }
+    
+    void AdvanceQuestTravelProgressOneHour()
+    {
+        var data = GameRepository.Data;
+        if (data == null || data.quests == null) return;
+
+        foreach (var qs in data.quests)
+        {
+            if (qs == null) continue;
+            if (qs.status != QuestStatus.InProgress) continue;
+          
+            qs.travelElapsedSeconds += realSecondsPerGameHour;
+        }
     }
 }
