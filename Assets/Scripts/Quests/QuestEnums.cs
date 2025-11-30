@@ -1,2 +1,13 @@
 
-public enum QuestStatus { NotReceived, InQueue, Received, InProgress, Completed, Declined, Cooldown }
+public enum QuestStatus
+{
+    NotReceived, 
+    InQueue, 
+    Received, 
+    InTravelTo, 
+    InExecution, 
+    InTravelBack,
+    Completed, 
+    Declined, 
+    Cooldown 
+}

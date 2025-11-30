@@ -19,3 +19,4 @@ public class QuestDefinition : ScriptableObject
     
     public List<ConditionAsset> unlockConditions = new();
 }
+

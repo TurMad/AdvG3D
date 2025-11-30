@@ -10,6 +10,9 @@ public class GameData
     public int guildExp = 0;
     public int day = 1;
     public int hour = 8;
+    
+    public int maxActiveQuests = 5;    
+    public int currentActiveQuests = 0;
 
     public HashSet<string> completedConditions = new();
     
@@ -25,6 +28,7 @@ public class  QuestStateDTO
     public int tradedGold;    
     public QuestStatus status; 
     public float travelElapsedSeconds;
+    public int executeHoursRemaining;
 }
 
 [Serializable]

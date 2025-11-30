@@ -38,7 +38,7 @@ public class TestUIController : MonoBehaviour
         // Если у тебя метод называется иначе — используй своё имя.
         QuestService.Update(GameRepository.Data, questId, q =>
         {
-            q.status = QuestStatus.InProgress;
+            q.status = QuestStatus.InTravelTo;
         });
 
 

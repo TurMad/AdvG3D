@@ -53,7 +53,7 @@ public class QuestDetailsUI : MonoBehaviour
         var st = QuestService.GetState(GameRepository.Data, _questId);
         if (st == null) return;
 
-        st.status = QuestStatus.InProgress;
+        st.status = QuestStatus.InTravelTo;
         GameRepository.Save();
 
         // активируем путь для этого квеста
