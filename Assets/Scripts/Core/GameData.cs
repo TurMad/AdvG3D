@@ -19,6 +19,8 @@ public class GameData
     public List<QuestStateDTO> quests = new();
 
     public List<AdventurerDTO> adventurers = new();
+    
+    public List<VisitorStateDTO> visitors = new();
 }
 
 [Serializable]
@@ -44,6 +46,5 @@ public class AdventurerDTO
 public class VisitorStateDTO
 {
     public string id;            
-    public VisitorStatus status; 
-    public int dayAdded;         
+    public VisitorStatus status;        
 }

@@ -27,6 +27,8 @@ public class TimeController : MonoBehaviour
         nextDayButton.onClick.RemoveAllListeners();
         nextDayButton.onClick.AddListener(OnClickNextDay);
         nextDayButton.interactable = false;
+        if (VisitorManager.Instance != null)
+            VisitorManager.Instance.RestoreTodayVisitorsFromData();
     }
 
     void Update()
@@ -64,6 +66,8 @@ public class TimeController : MonoBehaviour
         UpdateUI();
         QuestPathsManager.Instance.ResumeAllPaths();
         GameRepository.Save();
+        if (VisitorManager.Instance != null)
+            VisitorManager.Instance.GenerateVisitorsForToday();
     }
 
     void UpdateUI()

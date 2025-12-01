@@ -8,7 +8,6 @@ public class VisitorDefinition : ScriptableObject
     public string id;
     public string displayName;
     public int requiredReputation;
-    //public List<string> conversations = new();
     
     [Header("Type")]
     public VisitorKind kind;
@@ -16,12 +15,7 @@ public class VisitorDefinition : ScriptableObject
     public List<ConditionAsset> conditions = new();
     
     public string[] dialogueTitles;
-}
-
-public enum VisitorKind
-{
-    MainQuest,     
-    QuestGiver,     
-    Trader,         
-    Misc            
+    
+    [Header("Quests")]
+    public List<string> questIds = new();
 }

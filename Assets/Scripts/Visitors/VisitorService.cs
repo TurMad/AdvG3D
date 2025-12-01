@@ -5,18 +5,28 @@ using System.Collections.Generic;
 public static class VisitorService
 {
     private static VisitorRegistry _registry;
-    private static bool _subscribed;
 
     public static void EnsureRegistry() => _registry ??= Resources.Load<VisitorRegistry>("VisitorRegistry");
-
-    public static void SubscribeIfNeeded()
+    
+    public static void SyncWithRegistry(GameData data)
     {
-        if (_subscribed) return;
-        _subscribed = true;
+        EnsureRegistry();
+        if (_registry == null || data == null) return;
 
-        GameEvents.OnQuestCompleted      += id => TryCompleteByEvent(ConditionType.QuestCompleted, id);
-        GameEvents.OnBuildingConstructed += id => TryCompleteByEvent(ConditionType.BuildingConstructed, id);
-        GameEvents.OnItemPurchased       += id => TryCompleteByEvent(ConditionType.ItemPurchased, id);
+        if (data.visitors == null)
+            data.visitors = new List<VisitorStateDTO>();
+
+        foreach (var def in _registry.visitors)
+        {
+            if (def == null || string.IsNullOrEmpty(def.id)) continue;
+            if (data.visitors.Any(v => v.id == def.id)) continue;
+
+            data.visitors.Add(new VisitorStateDTO
+            {
+                id = def.id,
+                status = VisitorStatus.Available,
+            });
+        }
     }
 
     public static bool IsVisitorAvailable(VisitorDefinition v)

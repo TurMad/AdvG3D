@@ -1553,7 +1553,7 @@ MonoBehaviour:
   nextDayButton: {fileID: 8521136139057545310}
   startHour: 8
   endHour: 24
-  realSecondsPerGameHour: 3
+  realSecondsPerGameHour: 1
 --- !u!4 &893477811
 Transform:
   m_ObjectHideFlags: 0
@@ -2186,6 +2186,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29a074d529cf945029ef7cf40540c9df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Splines::UnityEngine.Splines.SplineAnimate
+--- !u!1 &1914088776
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1914088778}
+  - component: {fileID: 1914088777}
+  m_Layer: 0
+  m_Name: VisitorManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1914088777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914088776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a3c0cced2c4cf74da58183aac8c3426, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VisitorManager
+  registry: {fileID: 0}
+  todayVisitors: []
+--- !u!4 &1914088778
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914088776}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1930153604
 GameObject:
   m_ObjectHideFlags: 0
@@ -2733,8 +2779,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8701515827588707016}
   m_HandleRect: {fileID: 5301046536035028975}
   m_Direction: 2
-  m_Value: 0.000000174416
-  m_Size: 0.6777359
+  m_Value: -0.0000020929936
+  m_Size: 0.67773384
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5982,7 +6028,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 174.97003}
+  m_AnchoredPosition: {x: 0, y: 174.97028}
   m_SizeDelta: {x: 0, y: 542.94}
   m_Pivot: {x: 0, y: 1}
 --- !u!1660057539 &9223372036854775807
@@ -6000,3 +6046,4 @@ SceneRoots:
   - {fileID: 1485368702}
   - {fileID: 451807791}
   - {fileID: 142180378}
+  - {fileID: 1914088778}

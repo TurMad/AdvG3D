@@ -1,6 +1,14 @@
+public enum VisitorKind
+{
+    MainQuest,     
+    QuestGiver,     
+    Trader,         
+    Misc            
+}
+
 public enum VisitorStatus
 {
-    InQueue,        // появился сегодня и ждет игрока
-    Served,         // игрок выбрал / взял задание / поговорил
-    Left            // ушёл, не получил внимания
+    Available,   
+    NotAvailable, 
+    InQueue      
 }

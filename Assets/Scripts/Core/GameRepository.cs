@@ -13,6 +13,7 @@ public static class GameRepository
         SelectSlot(slot);
         Data = SlotHasSave(slot) ? _provider.LoadGameData(slot) : LoadDefaultsFromPreset();
         QuestService.SyncWithRegistry(Data);    
+        VisitorService.SyncWithRegistry(Data);
         if (!SlotHasSave(slot)) _provider.SaveGameData(Data, slot);
     }
     
@@ -27,6 +28,7 @@ public static class GameRepository
         int s = SaveSlots.Active;
         Data = SlotHasSave(s) ? _provider.LoadGameData(s) : LoadDefaultsFromPreset();
         QuestService.SyncWithRegistry(Data);  
+        VisitorService.SyncWithRegistry(Data);
     }
 
     public static void Save()

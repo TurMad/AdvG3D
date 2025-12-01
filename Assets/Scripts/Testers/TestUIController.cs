@@ -15,7 +15,6 @@ public class TestUIController : MonoBehaviour
     {
         GameRepository.InitOrLoad();
         VisitorService.EnsureRegistry();
-        VisitorService.SubscribeIfNeeded();
         QuestService.EnsureRegistry();
         QuestService.SubscribeIfNeeded();
         RefreshAll();

@@ -10,15 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9be950f363a516243a0fdc5d73781c76, type: 3}
-  m_Name: Visitor_Test_2
+  m_Name: Visitor_Test_Main_1
   m_EditorClassIdentifier: Assembly-CSharp::VisitorDefinition
-  id: Visitor_Test_2
-  displayName: "\u0422\u0435\u0441\u0442\u043E\u0432\u044B\u0439 \u041F\u043E\u0441\u0435\u0442\u0438\u0442\u0435\u043B\u044C
-    2"
-  requiredReputation: 100
-  kind: 1
-  conditions:
-  - {fileID: 11400000, guid: 5c39699b41495b246abe20875e8e2b81, type: 2}
-  - {fileID: 11400000, guid: 41f93de068765ed44a1800d711fdf0b9, type: 2}
+  id: Visitor_Test_Main_1
+  displayName: Visitor_Test_Main_1
+  requiredReputation: 0
+  kind: 0
+  conditions: []
   dialogueTitles: []
-  questIds: []
+  questIds:
+  - Quest_1_Visitor_Test_Main_1
