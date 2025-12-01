@@ -34,8 +34,16 @@ public class  QuestStateDTO
 [Serializable]
 public class AdventurerDTO
 {
-    public string adventurerId; // ваш ID из базы
+    public string adventurerId; 
     public int level;
     public int exp;
-    public string state;        // "Available/Busy"
+    public string state;
+}
+
+[System.Serializable]
+public class VisitorStateDTO
+{
+    public string id;            
+    public VisitorStatus status; 
+    public int dayAdded;         
 }
