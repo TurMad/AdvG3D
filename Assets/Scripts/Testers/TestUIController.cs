@@ -54,4 +54,36 @@ public class TestUIController : MonoBehaviour
         if (reputationText) reputationText.text = GameRepository.Data.reputation.ToString();
         if (visitorList) visitorList.Rebuild();
     }
+    
+    public void OnClick_ResetAllQuestsAndVisitors()
+    {
+        if (GameRepository.Data == null)
+            GameRepository.InitOrLoad();
+        var data = GameRepository.Data;
+        if (data == null) return;
+        if (data.quests != null)
+        {
+            foreach (var q in data.quests)
+            {
+                if (q == null) continue;
+                q.status = QuestStatus.NotReceived;
+
+            }
+        }
+
+        if (data.visitors != null)
+        {
+            foreach (var v in data.visitors)
+            {
+                if (v == null) continue;
+                v.status = VisitorStatus.Available;
+            }
+        }
+
+        if (VisitorManager.Instance != null)
+            VisitorManager.Instance.todayVisitors.Clear();
+
+        GameRepository.Save();
+        
+    }
 }

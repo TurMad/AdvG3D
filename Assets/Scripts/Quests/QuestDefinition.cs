@@ -13,6 +13,7 @@ public class QuestDefinition : ScriptableObject
     public int executeHours = 1;  
     public int notifyHours = 1;  
     
+    public int requiredReputation = 0; 
 
     [Header("Rewards")]
     public int baseGold = 0;       

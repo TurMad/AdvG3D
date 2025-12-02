@@ -28,6 +28,7 @@ public static class VisitorService
             });
         }
     }
+    
 
     public static bool IsVisitorAvailable(VisitorDefinition v)
     {

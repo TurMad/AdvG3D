@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestRegistry
   quests:
   - {fileID: 11400000, guid: b4f594cf37f508e459356155f0a050d8, type: 2}
+  - {fileID: 11400000, guid: 3d94f74ffb22543499bbd6fa26f6b35a, type: 2}
+  - {fileID: 11400000, guid: 9dc5c65dc4277944ba9dfc56ed1afc2f, type: 2}
+  - {fileID: 11400000, guid: 1e72949459831cc419acbb76bb90bae9, type: 2}
   - {fileID: 11400000, guid: 8717a754c37b48c46887cc86efe695f3, type: 2}
   - {fileID: 11400000, guid: e0fd27f7ba94c014eb136485481a4024, type: 2}
-  - {fileID: 11400000, guid: 1e72949459831cc419acbb76bb90bae9, type: 2}
+  - {fileID: 11400000, guid: 6cb7d5e7af6cb3b42aaf55ba872c899a, type: 2}
+  - {fileID: 11400000, guid: 8d0a393e0b3e9c34eb5d8f28132e6ee7, type: 2}

@@ -10,14 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9be950f363a516243a0fdc5d73781c76, type: 3}
-  m_Name: Visitor_Test_2
+  m_Name: Visitor_Test_Traider_2
   m_EditorClassIdentifier: Assembly-CSharp::VisitorDefinition
-  id: Visitor_Test_2
-  displayName: "\u0422\u0435\u0441\u0442\u043E\u0432\u044B\u0439 \u041F\u043E\u0441\u0435\u0442\u0438\u0442\u0435\u043B\u044C
-    2"
+  id: Visitor_Test_Traider_2
+  displayName: Visitor_Test_Traider_2
   requiredReputation: 0
-  kind: 1
+  kind: 2
   conditions: []
   dialogueTitles: []
   questIds:
-  - Quest_1_Visitor_Test_2
+  - Visitor_Test_Traider_2_Q_1

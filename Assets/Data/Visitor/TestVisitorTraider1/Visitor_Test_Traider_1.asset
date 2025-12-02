@@ -18,4 +18,5 @@ MonoBehaviour:
   kind: 2
   conditions: []
   dialogueTitles: []
-  questIds: []
+  questIds:
+  - Visitor_Test_Traider_1_Q_1

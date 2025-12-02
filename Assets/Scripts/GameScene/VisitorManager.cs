@@ -8,6 +8,10 @@ public class VisitorManager : MonoBehaviour
 
     [Header("Registry")]
     [SerializeField] private VisitorRegistry registry;
+    
+    [Header("Per-day limits")]
+    [SerializeField] private int maxQuestGiversPerDay = 2;
+    [SerializeField] private int maxMiscPerDay = 2;
 
     public List<VisitorStateDTO> todayVisitors = new();
 
@@ -24,81 +28,160 @@ public class VisitorManager : MonoBehaviour
     public void GenerateVisitorsForToday()
     {
         todayVisitors.Clear();
-
-        GenerateMainVisitorForToday();
-        // потом добавим:
-        // GenerateQuestGiversForToday();
-        // GenerateTradersForToday();
-        // GenerateMiscVisitorsForToday();
-    }
-    
-    private void GenerateMainVisitorForToday()
-    {
         var data = GameRepository.Data;
-        if (data == null) return;
-
-        if (data.visitors == null)
-            data.visitors = new List<VisitorStateDTO>();
-
-        // 1. Берём все стейты визиторов со статусом Доступен
-        var candidateStates = data.visitors
-            .Where(vs => vs.status == VisitorStatus.Available)
-            .ToList();
-
-        if (candidateStates.Count == 0) return;
-
-        // 2. Соотносим с дефинициями и фильтруем по типу Main + репутация + условия
-        var candidates =
-            (from vs in candidateStates
-             let def = GetDefinition(vs.id)
-             where def != null
-                   && def.kind == VisitorKind.MainQuest
-                   && IsVisitorAvailableByConditions(def)
-             select (def, vs)).ToList();
-
-        if (candidates.Count == 0) return;
-
-        // Пока берём первого подходящего
-        var (selectedDef, selectedState) = candidates[0];
-
-        // 3. Ищем доступный квест из списка этого визитора
-        if (selectedDef.questIds == null || selectedDef.questIds.Count == 0)
+        if (data == null)
         {
-            Debug.LogWarning($"[VisitorManager] Main visitor '{selectedDef.id}' has no questIds assigned.");
-            return;
+            GameRepository.InitOrLoad();
+            data = GameRepository.Data;
+            if (data == null) return;
         }
-
-        QuestStateDTO selectedQuestState = null;
-
-        foreach (var questId in selectedDef.questIds)
+        var availableDefs = VisitorService.GetAvailableVisitors();
+        var candidates = new List<VisitorCandidate>();
+        foreach (var def in availableDefs)
         {
-            var qs = QuestService.GetState(GameRepository.Data, questId);
-            if (qs == null) continue;
+            if (def == null) continue;
 
-            // считаем "доступным" только NotReceived
-            if (qs.status == QuestStatus.NotReceived)
+            var state = data.visitors.FirstOrDefault(v => v.id == def.id);
+            if (state == null) continue;
+            if (state.status != VisitorStatus.Available)
+                continue;
+            bool hasQuest = false;
+            if (def.questIds != null)
             {
-                selectedQuestState = qs;
-                break;
+                foreach (var questId in def.questIds)
+                {
+                    if (QuestService.IsQuestAvailable(data, questId))
+                    {
+                        hasQuest = true;
+                        break;
+                    }
+                }
             }
+
+            candidates.Add(new VisitorCandidate
+            {
+                def = def,
+                state = state,
+                hasAvailableQuest = hasQuest
+            });
         }
-
-        if (selectedQuestState == null)
-        {
-            // у этого визитора нет доступных квестов
-            return;
-        }
-
-        // 4. Ставим статусы в очередь
-        selectedState.status = VisitorStatus.InQueue;
-
-        selectedQuestState.status = QuestStatus.InQueue;
-
-        todayVisitors.Add(selectedState);
-
+        GenerateMainVisitor(candidates);
+        GenerateQuestGivers(candidates, data);
+        GenerateTrader(candidates);
+        GenerateMisc(candidates);
+        
         GameRepository.Save();
     }
+    void GenerateMainVisitor(List<VisitorCandidate> candidates)
+    {
+        // только MainQuest, доступные и с хотя бы одним доступным квестом
+        var mains = candidates
+            .Where(c => c.def.kind == VisitorKind.MainQuest
+                        && c.state.status == VisitorStatus.Available
+                        && c.hasAvailableQuest)
+            .ToList();
 
+        if (mains.Count == 0) return;
+
+        // можно взять первого или рандом
+        var chosen = mains[Random.Range(0, mains.Count)];
+
+        // выбираем конкретный квест для этого визитора
+        if (!TrySelectQuestForVisitor(chosen.def, out var questState))
+            return;
+
+        chosen.state.status = VisitorStatus.InQueue;
+        questState.status = QuestStatus.InQueue;
+
+        todayVisitors.Add(chosen.state);
+    }
+    void GenerateQuestGivers(List<VisitorCandidate> candidates, GameData data)
+    {
+        int remainingSlots = data.maxActiveQuests - data.currentActiveQuests;
+        if (remainingSlots <= 0) return;
+
+        int allowedBySlots = Mathf.Min(remainingSlots, maxQuestGiversPerDay);
+        if (allowedBySlots <= 0) return;
+
+        // только QuestGiver + доступен + есть хотя бы один доступный квест
+        var givers = candidates
+            .Where(c => c.def.kind == VisitorKind.QuestGiver
+                        && c.state.status == VisitorStatus.Available
+                        && c.hasAvailableQuest)
+            .ToList();
+
+        if (givers.Count == 0) return;
+
+        // лёгкий рандом
+        for (int i = 0; i < givers.Count; i++)
+        {
+            int j = Random.Range(i, givers.Count);
+            (givers[i], givers[j]) = (givers[j], givers[i]);
+        }
+
+        int spawned = 0;
+
+        foreach (var candidate in givers)
+        {
+            if (spawned >= allowedBySlots)
+                break;
+
+            // выбираем конкретный квест
+            if (!TrySelectQuestForVisitor(candidate.def, out var questState))
+                continue;
+
+            candidate.state.status = VisitorStatus.InQueue;
+            questState.status = QuestStatus.InQueue;
+
+            todayVisitors.Add(candidate.state);
+            spawned++;
+
+            if (data.currentActiveQuests >= data.maxActiveQuests)
+                break;
+        }
+    }
+    void GenerateTrader(List<VisitorCandidate> candidates)
+    {
+        var traders = candidates
+            .Where(c => c.def.kind == VisitorKind.Trader
+                        && c.state.status == VisitorStatus.Available)
+            .ToList();
+
+        if (traders.Count == 0) return;
+
+        var chosen = traders[Random.Range(0, traders.Count)];
+
+        chosen.state.status = VisitorStatus.InQueue;
+        todayVisitors.Add(chosen.state);
+    }
+    void GenerateMisc(List<VisitorCandidate> candidates)
+    {
+        var miscs = candidates
+            .Where(c => c.def.kind == VisitorKind.Misc
+                        && c.state.status == VisitorStatus.Available)
+            .ToList();
+
+        if (miscs.Count == 0) return;
+
+        for (int i = 0; i < miscs.Count; i++)
+        {
+            int j = Random.Range(i, miscs.Count);
+            (miscs[i], miscs[j]) = (miscs[j], miscs[i]);
+        }
+
+        int spawned = 0;
+
+        foreach (var candidate in miscs)
+        {
+            if (spawned >= maxMiscPerDay)
+                break;
+
+            candidate.state.status = VisitorStatus.InQueue;
+            todayVisitors.Add(candidate.state);
+            spawned++;
+        }
+    }
+    
     public void RestoreTodayVisitorsFromData()
     {
         todayVisitors.Clear();
@@ -166,4 +249,37 @@ public class VisitorManager : MonoBehaviour
 
         return true;
     }
+    
+    private bool TrySelectQuestForVisitor(VisitorDefinition visitorDef, out QuestStateDTO questState)
+    {
+        questState = null;
+        var data = GameRepository.Data;
+        if (data == null) return false;
+
+        if (visitorDef.questIds == null || visitorDef.questIds.Count == 0)
+            return false;
+
+        foreach (var questId in visitorDef.questIds)
+        {
+            if (!QuestService.IsQuestAvailable(data, questId))
+                continue;
+
+            var qState = QuestService.GetState(data, questId);
+            if (qState == null) continue;
+
+            questState = qState;
+            return true;
+        }
+
+        return false;
+    }
+
+    private struct VisitorCandidate
+    {
+        public VisitorDefinition def;
+        public VisitorStateDTO state;
+        public bool hasAvailableQuest;
+    }
 }
+
+

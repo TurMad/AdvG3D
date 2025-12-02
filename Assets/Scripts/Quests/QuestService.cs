@@ -100,4 +100,23 @@ public static class QuestService
 
         if (changed) GameRepository.Save();
     }
+    
+    public static bool IsQuestAvailable(GameData data, string questId)
+    {
+        if (data == null || string.IsNullOrEmpty(questId)) return false;
+
+        EnsureRegistry();
+        var def = GetDef(questId);
+        if (def == null) return false;
+        var state = GetState(data, questId);
+        if (state == null) return false;
+        if (state.status != QuestStatus.NotReceived)
+            return false;
+        if (data.reputation < def.requiredReputation)
+            return false;
+        if (!IsQuestUnlocked(questId))
+            return false;
+
+        return true;
+    }
 }
