@@ -17,6 +17,6 @@ MonoBehaviour:
   travelHours: 1
   executeHours: 1
   notifyHours: 1
-  requiredReputation: 50
+  requiredReputation: 0
   baseGold: 0
   unlockConditions: []

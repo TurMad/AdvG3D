@@ -18,8 +18,6 @@ MonoBehaviour:
   travelHours: 10
   executeHours: 1
   notifyHours: 1
-  requiredReputation: 50
+  requiredReputation: 0
   baseGold: 100
-  unlockConditions:
-  - {fileID: 11400000, guid: 3797266b34c13b94ebb375ca1e94d7a5, type: 2}
-  - {fileID: 11400000, guid: d33f4c4277d979e438899047e1610294, type: 2}
+  unlockConditions: []
