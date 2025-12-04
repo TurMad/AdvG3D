@@ -273,6 +273,13 @@ public class VisitorManager : MonoBehaviour
 
         return false;
     }
+    public VisitorStateDTO GetFirstTodayVisitor()
+    {
+        if (todayVisitors == null || todayVisitors.Count == 0)
+            return null;
+
+        return todayVisitors[0];
+    }
 
     private struct VisitorCandidate
     {

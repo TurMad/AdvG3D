@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VisitorDefinition
   id: Visitor_Test_Main_1
   displayName: Visitor_Test_Main_1
-  requiredReputation: 0
+  portrait: {fileID: 21300000, guid: 9a08f18c64bfcb84781131e4b700e038, type: 3}
   kind: 0
+  requiredReputation: 0
   conditions: []
   dialogueTitles: []
   questIds:

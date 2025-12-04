@@ -3900,7 +3900,7 @@ MonoBehaviour:
   settingsButton: {fileID: 1831993114}
   exitButton: {fileID: 1965484820}
   slotsPanel: {fileID: 239722306}
-  gameScene: Test
+  gameScene: GameScene
   slotBtn1: {fileID: 16168443}
   slotBtn2: {fileID: 1734937419}
   slotBtn3: {fileID: 1839668005}

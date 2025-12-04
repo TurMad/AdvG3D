@@ -8,6 +8,15 @@ public static class VisitorService
 
     public static void EnsureRegistry() => _registry ??= Resources.Load<VisitorRegistry>("VisitorRegistry");
     
+    public static VisitorDefinition GetDefinition(string id)
+    {
+        EnsureRegistry();
+        if (_registry == null || _registry.visitors == null)
+            return null;
+
+        return _registry.visitors.FirstOrDefault(v => v != null && v.id == id);
+    }
+    
     public static void SyncWithRegistry(GameData data)
     {
         EnsureRegistry();
