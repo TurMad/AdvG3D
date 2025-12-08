@@ -17,5 +17,7 @@ MonoBehaviour:
   travelHours: 5
   executeHours: 5
   notifyHours: 5
+  requiredReputation: 0
   baseGold: 0
+  dialogueTitles: Quest_1_Visitor_Test_Main_1
   unlockConditions: []

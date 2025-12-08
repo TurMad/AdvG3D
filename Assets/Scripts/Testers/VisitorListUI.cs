@@ -18,7 +18,7 @@ public class VisitorListUI : MonoBehaviour
             view.Setup(v.id, v.displayName, OnVisitorClicked);
 
             // вот это единственное добавление:
-            view.SetDialogues(v.dialogueTitles);
+            //view.SetDialogues(v.dialogueTitles);
         }
     }
 

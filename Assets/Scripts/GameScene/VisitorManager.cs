@@ -92,6 +92,7 @@ public class VisitorManager : MonoBehaviour
 
         chosen.state.status = VisitorStatus.InQueue;
         questState.status = QuestStatus.InQueue;
+        chosen.state.queuedQuestId = questState.id;
 
         todayVisitors.Add(chosen.state);
     }
@@ -132,7 +133,8 @@ public class VisitorManager : MonoBehaviour
 
             candidate.state.status = VisitorStatus.InQueue;
             questState.status = QuestStatus.InQueue;
-
+            candidate.state.queuedQuestId = questState.id;
+            
             todayVisitors.Add(candidate.state);
             spawned++;
 
@@ -280,6 +282,15 @@ public class VisitorManager : MonoBehaviour
 
         return todayVisitors[0];
     }
+    
+    public void RemoveFirstTodayVisitor()
+    {
+        if (todayVisitors == null || todayVisitors.Count == 0)
+            return;
+
+        todayVisitors.RemoveAt(0);
+    }
+
 
     private struct VisitorCandidate
     {

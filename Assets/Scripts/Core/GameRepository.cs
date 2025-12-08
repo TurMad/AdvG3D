@@ -14,6 +14,7 @@ public static class GameRepository
         Data = SlotHasSave(slot) ? _provider.LoadGameData(slot) : LoadDefaultsFromPreset();
         QuestService.SyncWithRegistry(Data);    
         VisitorService.SyncWithRegistry(Data);
+        AdventurerService.SyncWithRegistry(Data); 
         if (!SlotHasSave(slot)) _provider.SaveGameData(Data, slot);
     }
     

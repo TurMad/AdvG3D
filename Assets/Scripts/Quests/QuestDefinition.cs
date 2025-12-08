@@ -18,6 +18,8 @@ public class QuestDefinition : ScriptableObject
     [Header("Rewards")]
     public int baseGold = 0;       
     
+    public string dialogueTitles;
+    
     public List<ConditionAsset> unlockConditions = new();
 }
 

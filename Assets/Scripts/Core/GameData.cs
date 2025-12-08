@@ -36,15 +36,21 @@ public class  QuestStateDTO
 [Serializable]
 public class AdventurerDTO
 {
-    public string adventurerId; 
-    public int level;
-    public int exp;
-    public string state;
+    public string id;
+
+    public int attack;
+    public int defense;
+    public int buff;
+    public int debuff;
+    public int healing;
+    
+    public AdventurerStatus status;
 }
 
 [System.Serializable]
 public class VisitorStateDTO
 {
     public string id;            
-    public VisitorStatus status;        
+    public VisitorStatus status; 
+    public string queuedQuestId;
 }

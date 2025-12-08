@@ -17,8 +17,6 @@ public class VisitorDefinition : ScriptableObject
     public int requiredReputation;
     public List<ConditionAsset> conditions = new();
     
-    public string[] dialogueTitles;
-    
     [Header("Quests")]
     public List<string> questIds = new();
 }
