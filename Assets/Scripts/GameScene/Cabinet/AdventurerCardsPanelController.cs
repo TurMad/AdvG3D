@@ -16,11 +16,7 @@ public class AdventurerCardsPanelController : MonoBehaviour
     [SerializeField] private AdventurerCard[] cardPrefabs; // УНИКАЛЬНЫЕ префабы карт (с уже забитыми ID)
 
     private readonly List<AdventurerCard> _spawnedCards = new();
-
-    /// <summary>
-    /// Вызывается из кнопки "Показать список авантюристов".
-    /// Обновляет список карт и выдвигает панель.
-    /// </summary>
+    
     public void ShowPanel()
     {
         RebuildCardsList();
@@ -32,11 +28,16 @@ public class AdventurerCardsPanelController : MonoBehaviour
         panelRect.anchoredPosition = hiddenPosition;
         panelRect.DOAnchorPos(shownPosition, moveDuration).SetEase(Ease.OutCubic);
     }
+    
+    public void HidePanel()
+    {
+        if (panelRect == null)
+            return;
 
-    /// <summary>
-    /// Пересобирает список карт на основе префабов и данных.
-    /// Показываем только авантюристов со статусом Available.
-    /// </summary>
+        panelRect.DOAnchorPos(hiddenPosition, moveDuration)
+            .SetEase(Ease.OutCubic);
+    }
+
     private void RebuildCardsList()
     {
         ClearCards();

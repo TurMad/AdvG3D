@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AdventurerRegistry
   adventurers:
   - {fileID: 11400000, guid: 57f8ac33d26205546b3d3aa25e7f88bd, type: 2}
+  - {fileID: 11400000, guid: d43607fea8967074b814c731933234ae, type: 2}
+  - {fileID: 11400000, guid: 88e04c71dca4d2d489374f000f3100af, type: 2}
+  - {fileID: 11400000, guid: c3225af0b269d2345b687bb3213b1eb8, type: 2}

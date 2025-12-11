@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f7331e647eac2f4984d9ffbcb10b28b, type: 3}
-  m_Name: Adv_Test_1
+  m_Name: Adv_Test_3
   m_EditorClassIdentifier: Assembly-CSharp::AdventurerDefinition
-  id: Adv_Test_1
-  displayName: Adv_Test_1
-  baseAttack: 1
+  id: Adv_Test_3
+  displayName: Adv_Test_3
+  baseAttack: 2
   baseDefense: 2
   baseBuff: 3
-  baseDebuff: 4
-  baseHealing: 5
+  baseDebuff: 1
+  baseHealing: 1
