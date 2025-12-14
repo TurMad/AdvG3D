@@ -59,15 +59,23 @@ public class TestUIController : MonoBehaviour
     {
         if (GameRepository.Data == null)
             GameRepository.InitOrLoad();
+
         var data = GameRepository.Data;
         if (data == null) return;
+
         if (data.quests != null)
         {
             foreach (var q in data.quests)
             {
                 if (q == null) continue;
-                q.status = QuestStatus.NotReceived;
 
+                q.status = QuestStatus.Received;
+
+                q.assignedAdventurer1 = null;
+                q.assignedAdventurer2 = null;
+                q.assignedAdventurer3 = null;
+                q.assignedAdventurer4 = null;
+                q.assignedAdventurer5 = null;
             }
         }
 
@@ -80,10 +88,20 @@ public class TestUIController : MonoBehaviour
             }
         }
 
+        if (data.adventurers != null)
+        {
+            foreach (var a in data.adventurers)
+            {
+                if (a == null) continue;
+
+                a.status = AdventurerStatus.Available;
+            }
+        }
+
         if (VisitorManager.Instance != null)
             VisitorManager.Instance.todayVisitors.Clear();
 
         GameRepository.Save();
-        
+
     }
 }

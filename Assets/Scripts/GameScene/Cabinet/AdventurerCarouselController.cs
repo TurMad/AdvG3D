@@ -10,54 +10,107 @@ public class AdventurerCarouselController : MonoBehaviour
     [SerializeField] private Vector2 hiddenPosition;
     [SerializeField] private Vector2 shownPosition;
     [SerializeField] private float moveDuration = 0.4f;
-    
+
     [Header("Anchors")]
-    [SerializeField] private Transform centerAnchor;   // середина
-    [SerializeField] private Transform leftAnchor;     // слева
-    [SerializeField] private Transform rightAnchor;    // справа
-    [SerializeField] private Transform poolParent;     // куда складывать лишние карты (можно пустой объект вне кадра)
+    [SerializeField] private Transform centerAnchor;
+    [SerializeField] private Transform leftAnchor;
+    [SerializeField] private Transform rightAnchor;
+    [SerializeField] private Transform poolParent;
 
-    [Header("Prefabs")]
-    [SerializeField] private AdventurerCard[] cardPrefabs; // префабы с уже проставленными AdventurerId
-
-    public List<AdventurerCard> _cards = new();
+    private readonly List<AdventurerCard> _cards = new();
     private int _currentIndex = 0;
 
-    private void OnEnable()
+    private QuestSendWindow _activeWindow;
+    private int _activeSlotIndex = -1;
+
+    private Tween _moveTween;
+
+    private void Awake()
     {
-        BuildCards();
-        UpdateVisibleCards();
-        
         if (panelRect == null)
             panelRect = GetComponent<RectTransform>();
 
-        // запускаем с позиции hidden → к shown, с подпрыгиванием
-        panelRect.DOKill();
-        panelRect.anchoredPosition = hiddenPosition;
-        panelRect
-            .DOAnchorPos(shownPosition, moveDuration)
-            .SetEase(Ease.OutBack);
-    }
-
-    private void OnDisable()
-    {
-        ClearCards();
-        
-        if (panelRect == null)
-            panelRect = GetComponent<RectTransform>();
-
-        // уезжаем обратно в hidden
-        panelRect.DOKill();
-        panelRect
-            .DOAnchorPos(hiddenPosition, moveDuration)
-            .SetEase(Ease.InBack);
-
-        ClearCards();
+        // стартуем спрятанными (если объект активен в сцене)
+        if (panelRect != null)
+            panelRect.anchoredPosition = hiddenPosition;
     }
 
     /// <summary>
-    /// Собираем список доступных авантюристов из префабов.
+    /// Показывает карусель для конкретного окна и конкретного слота.
+    /// Вызывается из CabinetUIController.
     /// </summary>
+    public void Show(QuestSendWindow window, int slotIndex)
+    {
+        _activeWindow = window;
+        _activeSlotIndex = slotIndex;
+
+        gameObject.SetActive(true);
+
+        BuildCards();
+        UpdateVisibleCards();
+
+        AnimateTo(shownPosition, Ease.OutBack);
+    }
+
+    /// <summary>
+    /// Скрывает карусель с анимацией и выключает объект после завершения.
+    /// </summary>
+    public void Hide()
+    {
+        AnimateTo(hiddenPosition, Ease.InBack, () =>
+        {
+            ClearCards();
+            _activeWindow = null;
+            _activeSlotIndex = -1;
+
+            gameObject.SetActive(false);
+        });
+    }
+
+    public void OnClick_SelectCenter()
+    {
+        if (_cards.Count == 0) return;
+
+        var selectedCard = _cards[_currentIndex];
+        if (selectedCard == null) return;
+
+        string id = selectedCard.AdventurerId;
+        if (string.IsNullOrEmpty(id)) return;
+
+        var data = GameRepository.Data;
+        if (data != null && data.adventurers != null)
+        {
+            var dto = data.adventurers.FirstOrDefault(a => a.id == id);
+            if (dto != null)
+            {
+                dto.status = AdventurerStatus.Selected;
+                GameRepository.Save();
+            }
+        }
+
+        // сообщаем окну
+        if (_activeWindow != null && _activeSlotIndex >= 0)
+            _activeWindow.OnAdventurerChosen(_activeSlotIndex, id);
+
+        Hide();
+    }
+
+    public void OnClickNext()
+    {
+        if (_cards.Count == 0) return;
+
+        _currentIndex = (_currentIndex + 1) % _cards.Count;
+        UpdateVisibleCards();
+    }
+
+    public void OnClickPrevious()
+    {
+        if (_cards.Count == 0) return;
+
+        _currentIndex = (_currentIndex - 1 + _cards.Count) % _cards.Count;
+        UpdateVisibleCards();
+    }
+
     private void BuildCards()
     {
         ClearCards();
@@ -66,10 +119,14 @@ public class AdventurerCarouselController : MonoBehaviour
         if (data == null || data.adventurers == null)
             return;
 
-        if (cardPrefabs == null || cardPrefabs.Length == 0)
+        var prefabs = CabinetUIController.Instance != null
+            ? CabinetUIController.Instance.GetAdventurerCardPrefabs()
+            : null;
+
+        if (prefabs == null || prefabs.Length == 0)
             return;
 
-        foreach (var prefab in cardPrefabs)
+        foreach (var prefab in prefabs)
         {
             if (prefab == null) continue;
 
@@ -79,7 +136,6 @@ public class AdventurerCarouselController : MonoBehaviour
             var dto = data.adventurers.FirstOrDefault(a => a.id == id);
             if (dto == null) continue;
 
-            // Берём только доступных
             if (dto.status != AdventurerStatus.Available)
                 continue;
 
@@ -97,42 +153,16 @@ public class AdventurerCarouselController : MonoBehaviour
 
     private void ClearCards()
     {
-        foreach (var card in _cards)
+        for (int i = 0; i < _cards.Count; i++)
         {
-            if (card != null)
-                Destroy(card.gameObject);
+            if (_cards[i] != null)
+                Destroy(_cards[i].gameObject);
         }
 
         _cards.Clear();
         _currentIndex = 0;
     }
 
-    /// <summary>
-    /// Кнопка "вперёд" (правая стрелка).
-    /// </summary>
-    public void OnClickNext()
-    {
-        if (_cards.Count == 0) return;
-
-        _currentIndex = (_currentIndex + 1) % _cards.Count;
-        UpdateVisibleCards();
-    }
-
-    /// <summary>
-    /// Кнопка "назад" (левая стрелка).
-    /// </summary>
-    public void OnClickPrevious()
-    {
-        if (_cards.Count == 0) return;
-
-        _currentIndex = (_currentIndex - 1 + _cards.Count) % _cards.Count;
-        UpdateVisibleCards();
-    }
-
-    /// <summary>
-    /// Расставляем карты по трём якорям: центр, лево, право.
-    /// Остальные прячем.
-    /// </summary>
     private void UpdateVisibleCards()
     {
         if (_cards.Count == 0)
@@ -151,20 +181,16 @@ public class AdventurerCarouselController : MonoBehaviour
 
             if (i == center)
             {
-                // центр всегда показываем
                 SetCardToAnchor(card, centerAnchor);
                 card.gameObject.SetActive(true);
             }
             else if (count == 1)
             {
-                // при одном авантюристе остальные скрыты
-                card.gameObject.SetActive(false);
-                if (poolParent != null)
-                    card.transform.SetParent(poolParent, false);
+                HideToPool(card);
             }
             else if (count == 2)
             {
-                // при двух: только центр и ПРАВЫЙ
+                // при двух: центр + правый (второй)
                 int other = (center == 0) ? 1 : 0;
 
                 if (i == other)
@@ -174,12 +200,10 @@ public class AdventurerCarouselController : MonoBehaviour
                 }
                 else
                 {
-                    card.gameObject.SetActive(false);
-                    if (poolParent != null)
-                        card.transform.SetParent(poolParent, false);
+                    HideToPool(card);
                 }
             }
-            else // count >= 3
+            else // 3+
             {
                 if (i == left)
                 {
@@ -193,12 +217,17 @@ public class AdventurerCarouselController : MonoBehaviour
                 }
                 else
                 {
-                    card.gameObject.SetActive(false);
-                    if (poolParent != null)
-                        card.transform.SetParent(poolParent, false);
+                    HideToPool(card);
                 }
             }
         }
+    }
+
+    private void HideToPool(AdventurerCard card)
+    {
+        card.gameObject.SetActive(false);
+        if (poolParent != null)
+            card.transform.SetParent(poolParent, false);
     }
 
     private void SetCardToAnchor(AdventurerCard card, Transform anchor)
@@ -209,5 +238,25 @@ public class AdventurerCarouselController : MonoBehaviour
         card.transform.localPosition = Vector3.zero;
         card.transform.localRotation = Quaternion.identity;
         card.transform.localScale = Vector3.one;
+    }
+
+    private void AnimateTo(Vector2 target, Ease ease, System.Action onComplete = null)
+    {
+        if (panelRect == null)
+            panelRect = GetComponent<RectTransform>();
+
+        if (panelRect == null)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
+        _moveTween?.Kill();
+        panelRect.DOKill();
+
+        _moveTween = panelRect
+            .DOAnchorPos(target, moveDuration)
+            .SetEase(ease)
+            .OnComplete(() => onComplete?.Invoke());
     }
 }

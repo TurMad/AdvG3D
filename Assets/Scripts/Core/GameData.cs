@@ -31,6 +31,12 @@ public class  QuestStateDTO
     public QuestStatus status; 
     public float travelElapsedSeconds;
     public int executeHoursRemaining;
+    
+    public string assignedAdventurer1;
+    public string assignedAdventurer2;
+    public string assignedAdventurer3;
+    public string assignedAdventurer4;
+    public string assignedAdventurer5;
 }
 
 [Serializable]
