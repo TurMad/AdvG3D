@@ -10,6 +10,11 @@ public class TestUIController : MonoBehaviour
     [SerializeField] VisitorListUI visitorList;
     
     [SerializeField] GameObject somePanelToShow;
+    
+    [SerializeField] private Button camView0Button;
+    [SerializeField] private Button camView90Button;
+    [SerializeField] private Button camView180Button;
+    [SerializeField] private Button camMapButton;
 
     void Start()
     {
@@ -26,6 +31,18 @@ public class TestUIController : MonoBehaviour
                 GameRepository.Save();
                 RefreshAll();
             });
+        
+        if (camView0Button)
+            camView0Button.onClick.AddListener(() => CameraController.Instance.ShowRoomView0());
+
+        if (camView90Button)
+            camView90Button.onClick.AddListener(() => CameraController.Instance.ShowRoomView90());
+
+        if (camView180Button)
+            camView180Button.onClick.AddListener(() => CameraController.Instance.ShowRoomView180());
+
+        if (camMapButton)
+            camMapButton.onClick.AddListener(() => CameraController.Instance.ShowMapTop());
     }
     
     public void AcceptQuest(string questId)
