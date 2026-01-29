@@ -86,7 +86,7 @@ public class TestUIController : MonoBehaviour
             {
                 if (q == null) continue;
 
-                q.status = QuestStatus.Received;
+                q.status = QuestStatus.NotReceived;
 
                 q.assignedAdventurer1 = null;
                 q.assignedAdventurer2 = null;
