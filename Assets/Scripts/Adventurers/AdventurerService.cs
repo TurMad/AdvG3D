@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public static class AdventurerService
@@ -19,6 +20,16 @@ public static class AdventurerService
     public static AdventurerDTO GetState(GameData data, string id)
     {
         return data.adventurers.Find(a => a.id == id);
+    }
+    
+    public static int GetEnergy(string adventurerId)
+    {
+        var data = GameRepository.Data;
+        if (data == null || data.adventurers == null)
+            return 0;
+
+        var adv = data.adventurers.FirstOrDefault(a => a != null && a.id == adventurerId);
+        return adv != null ? adv.energy : 0;
     }
 
     public static void SyncWithRegistry(GameData data)

@@ -164,9 +164,13 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6878928657788531438, guid: d36d1216987a16146b0813e6978378b7, type: 3}
+      propertyPath: adventurerId
+      value: Madi_Paladin
+      objectReference: {fileID: 0}
     - target: {fileID: 6996202382443762315, guid: d36d1216987a16146b0813e6978378b7, type: 3}
       propertyPath: m_Name
-      value: AdventurerCardPrefabTest1
+      value: Madi_Paladin_Prefab
       objectReference: {fileID: 0}
     - target: {fileID: 6997791094329149653, guid: d36d1216987a16146b0813e6978378b7, type: 3}
       propertyPath: m_AnchorMax.y

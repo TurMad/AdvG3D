@@ -27,6 +27,7 @@ public static class QuestService
                 {
                     id = def.id,
                     tradedGold = def.baseGold,
+                    questRank = Rank.G,
                     status = QuestStatus.NotReceived
                 });
         }

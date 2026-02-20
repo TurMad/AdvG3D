@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestDefinition
   id: Quest_1_Visitor_Test_Main_1
   title: Quest_1_Visitor_Test_Main_1
+  icon: {fileID: 21300000, guid: 58144efeed11d1d42bdab9aba56b99eb, type: 3}
   travelHours: 5
-  executeHours: 5
+  executeHours: 2
   notifyHours: 5
   requiredReputation: 0
+  requiredPower: 30
   baseGold: 0
   dialogueTitles: Quest_1_Visitor_Test_Main_1
   unlockConditions: []

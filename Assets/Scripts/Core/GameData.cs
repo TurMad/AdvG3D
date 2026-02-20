@@ -21,13 +21,17 @@ public class GameData
     public List<AdventurerDTO> adventurers = new();
     
     public List<VisitorStateDTO> visitors = new();
+    
+    public List<MissionReportDTO> missionReports = new();
 }
 
 [Serializable]
 public class  QuestStateDTO
 {
     public string id;
-    public int tradedGold;    
+    public int tradedGold;   
+    public Rank questRank = Rank.G;
+    
     public QuestStatus status; 
     public float travelElapsedSeconds;
     public int executeHoursRemaining;
@@ -43,6 +47,10 @@ public class  QuestStateDTO
 public class AdventurerDTO
 {
     public string id;
+    
+    public int level = 1;
+    
+    public int energy = 100;
 
     public int attack;
     public int defense;
@@ -60,3 +68,26 @@ public class VisitorStateDTO
     public VisitorStatus status; 
     public string queuedQuestId;
 }
+
+[Serializable]
+public class MissionReportDTO
+{
+    public string reportId;                
+    public string questId;
+
+    public MissionResult result;
+
+    public int requiredPower;
+    public int partyPowerBase;
+    public int partyPowerFinal;
+
+    public List<string> adventurerIds = new();
+}
+
+public enum MissionResult
+{
+    None = 0,
+    Success = 1,
+    Fail = 2
+}
+

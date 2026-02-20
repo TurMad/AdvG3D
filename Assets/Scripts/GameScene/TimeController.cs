@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -133,10 +136,94 @@ public class TimeController : MonoBehaviour
         if (qs.executeHoursRemaining > 0)
             return;
         qs.executeHoursRemaining = 0;
+        
+        ResolveQuestAndWriteReport(qs);
         qs.status = QuestStatus.InTravelBack;
 
         if (QuestPathsManager.Instance != null)
             QuestPathsManager.Instance.ResumePath(qs.id);
+    }
+    
+    void ResolveQuestAndWriteReport(QuestStateDTO qs)
+    {
+        var data = GameRepository.Data;
+        if (data == null) return;
+
+        var def = QuestService.GetDef(qs.id);
+        if (def == null) return;
+
+        // соберём assigned 1-5
+        var ids = new List<string>(5);
+        if (!string.IsNullOrEmpty(qs.assignedAdventurer1)) ids.Add(qs.assignedAdventurer1);
+        if (!string.IsNullOrEmpty(qs.assignedAdventurer2)) ids.Add(qs.assignedAdventurer2);
+        if (!string.IsNullOrEmpty(qs.assignedAdventurer3)) ids.Add(qs.assignedAdventurer3);
+        if (!string.IsNullOrEmpty(qs.assignedAdventurer4)) ids.Add(qs.assignedAdventurer4);
+        if (!string.IsNullOrEmpty(qs.assignedAdventurer5)) ids.Add(qs.assignedAdventurer5);
+
+        int partyPowerBase = 0;
+
+        if (data.adventurers != null && ids.Count > 0)
+        {
+            foreach (var id in ids)
+            {
+                var adv = data.adventurers.FirstOrDefault(a => a != null && a.id == id);
+                if (adv == null) continue;
+
+                partyPowerBase += CombatPowerCalculator.GetVisiblePower(adv);
+            }
+        }
+
+        int requiredPower = def.requiredPower;
+        int partyPowerFinal = partyPowerBase;
+
+        var result = partyPowerFinal >= requiredPower ? MissionResult.Success : MissionResult.Fail;
+
+        if (data.missionReports == null)
+            data.missionReports = new List<MissionReportDTO>();
+
+        int nextIndex = GetNextReportIndexForQuest(qs.id);
+
+        var report = new MissionReportDTO
+        {
+            reportId = $"{qs.id}_{nextIndex}",
+            questId = qs.id,
+            result = result,
+            requiredPower = requiredPower,
+            partyPowerBase = partyPowerBase,
+            partyPowerFinal = partyPowerFinal,
+            adventurerIds = ids
+        };
+
+        data.missionReports.Add(report);
+        GameRepository.Save();
+    }
+    
+    int GetNextReportIndexForQuest(string questId)
+    {
+        var data = GameRepository.Data;
+        if (data == null || data.missionReports == null) return 1;
+
+        int maxIndex = 0;
+
+        foreach (var r in data.missionReports)
+        {
+            if (r == null) continue;
+            if (r.questId != questId) continue;
+
+            // ожидаем формат: questId_number
+            if (string.IsNullOrEmpty(r.reportId)) continue;
+
+            string prefix = questId + "_";
+            if (!r.reportId.StartsWith(prefix)) continue;
+
+            string tail = r.reportId.Substring(prefix.Length);
+            if (int.TryParse(tail, out int idx))
+            {
+                if (idx > maxIndex) maxIndex = idx;
+            }
+        }
+
+        return maxIndex + 1;
     }
 
     void HandleTravelBack(QuestStateDTO qs)
@@ -150,5 +237,7 @@ public class TimeController : MonoBehaviour
         qs.travelElapsedSeconds = fullCycle;
         qs.status = QuestStatus.Completed;
         QuestPathsManager.Instance.DeactivatePath(qs.id);
+        if (MissionReportsController.Instance != null)
+            MissionReportsController.Instance.AddReportForQuest(qs.id);
     }
 }

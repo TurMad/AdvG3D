@@ -2,6 +2,14 @@ using UnityEngine;
 
 public class DialogueGameEvents : MonoBehaviour
 {
+    [SerializeField] private QuestOfferSheetWindow questOfferSheetWindow;
+
+
+    public void OpenQuestOfferSheetWindow(string questId)
+    {
+        questOfferSheetWindow.Open(questId);
+    }
+    
     public void RemoveFirstVisitorFromToday()
     {
         if (VisitorManager.Instance == null)

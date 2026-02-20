@@ -19,5 +19,7 @@ MonoBehaviour:
   executeHours: 1
   notifyHours: 1
   requiredReputation: 0
+  requiredPower: 20
   baseGold: 100
+  dialogueTitles: 
   unlockConditions: []

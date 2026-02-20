@@ -1,10 +1,15 @@
 using UnityEngine;
+using System.Collections.Generic;
+
 
 [CreateAssetMenu(fileName = "Adv_", menuName = "Game/Adventurer Definition")]
 public class AdventurerDefinition : ScriptableObject
 {
     public string id;
     public string displayName;
+    
+    [Header("Attack Types")]
+    public List<AttackType> attackTypes = new();
     
     [Header("Base Stats")]
     public int baseAttack;

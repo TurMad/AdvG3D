@@ -169,6 +169,8 @@ public class QuestSendWindow : MonoBehaviour
 
         // 1) квест в путь
         questState.status = QuestStatus.InTravelTo;
+        questState.travelElapsedSeconds = 0f;
+        questState.executeHoursRemaining = 0;
 
         // 2) записываем 5 слотов
         questState.assignedAdventurer1 = selectedAdventurerIds.Count > 0 ? selectedAdventurerIds[0] : null;

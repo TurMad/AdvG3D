@@ -54,33 +54,39 @@ public class QuestPathsManager : MonoBehaviour
 
     public void ActivatePath(string questId)
     {
-        if (cachedPaths.TryGetValue(questId, out var path))
-        {
-            Debug.Log($"[QuestPathsManager] Activating path: {questId}");
-        
-            path.gameObject.SetActive(true); 
-
-            var mover = path.GetComponent<QuestPath>();
-            if (mover != null && mover.SplineAnimate != null)
-            {
-                var def = QuestService.GetDef(questId);
-                if (def != null)
-                {
-                    float durationSeconds = def.travelHours * secondsPerGameHour;
-                    mover.SplineAnimate.Duration = durationSeconds;
-                }
-
-                var state = QuestService.GetState(GameRepository.Data, questId);
-                if (state != null)
-                {
-                    mover.SplineAnimate.ElapsedTime = state.travelElapsedSeconds;
-                }
-            }
-        }
-        else
+        if (!cachedPaths.TryGetValue(questId, out var path))
         {
             Debug.LogWarning($"[QuestPathsManager] Path NOT FOUND for questId: {questId}");
+            return;
         }
+
+        Debug.Log($"[QuestPathsManager] Activating path: {questId}");
+
+        path.gameObject.SetActive(true);
+
+        var mover = path.GetComponent<QuestPath>();
+        if (mover == null || mover.SplineAnimate == null)
+            return;
+
+        var anim = mover.SplineAnimate;
+        anim.enabled = true;
+
+        var def = QuestService.GetDef(questId);
+        if (def != null)
+        {
+            float durationSeconds = def.travelHours * secondsPerGameHour;
+            anim.Duration = Mathf.Max(0.01f, durationSeconds);
+        }
+
+        var state = QuestService.GetState(GameRepository.Data, questId);
+        float elapsed = 0f;
+        if (state != null)
+            elapsed = Mathf.Clamp(state.travelElapsedSeconds, 0f, anim.Duration);
+
+        // применяем позицию и запускаем
+        anim.Pause();
+        anim.ElapsedTime = elapsed;
+        anim.Play();
     }
     
     public void PauseAllPaths()
