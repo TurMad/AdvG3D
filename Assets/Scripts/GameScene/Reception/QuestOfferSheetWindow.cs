@@ -6,16 +6,18 @@ public class QuestOfferSheetWindow : MonoBehaviour
 {
     [Header("UI")]
     [SerializeField] private Image questIconImage;
-    [SerializeField] private TMP_Text rankValueText;              // сюда пишем выбранный ранг
-    [SerializeField] private TMP_Text goldForAdventurersText;      // пока просто вывод-заглушка
-    [SerializeField] private Slider rankSlider;                   // G..SSS
+    [SerializeField] private TMP_Text rankValueText;             
+    [SerializeField] private Slider rankSlider;      
+    [SerializeField] private Slider guildShareSlider; 
+    [SerializeField] private TMP_Text guildGoldText;
+    [SerializeField] private TMP_Text adventurersGoldText;
 
     private string _questId;
+    private int _totalGoldForQuest;
     private Rank _selectedRank = Rank.G;
 
     private void Awake()
     {
-        // Слайдер должен быть дискретным
         if (rankSlider != null)
         {
             rankSlider.wholeNumbers = true;
@@ -23,27 +25,41 @@ public class QuestOfferSheetWindow : MonoBehaviour
             rankSlider.maxValue = 9;
             rankSlider.onValueChanged.AddListener(OnRankSliderChanged);
         }
+        if (guildShareSlider != null)
+            guildShareSlider.onValueChanged.AddListener(_ => RefreshGoldSplitTexts());
+        
+        
     }
 
     public void Open(string questId)
     {
         _questId = questId;
-
-        // подтягиваем деф
+        
         var def = QuestService.GetDef(questId);
+        
         if (def != null && questIconImage != null)
         {
             questIconImage.sprite = def.icon;
             questIconImage.enabled = def.icon != null;
         }
 
-        // стартовые значения (пока просто G)
         SetRank(Rank.G);
+        
+        var data = GameRepository.Data;
+        var state = QuestService.GetState(data, _questId);
+        _totalGoldForQuest = state != null ? state.tradedGold : 0;
+        
+        Debug.Log(_totalGoldForQuest);
+        
+        if (guildShareSlider != null)
+        {
+            guildShareSlider.minValue = 0;
+            guildShareSlider.maxValue = 100;
+            guildShareSlider.wholeNumbers = true;
+            guildShareSlider.SetValueWithoutNotify(10);
+        }
 
-        // золото авантюристам пока не считаем — просто очистим/заглушка
-        if (goldForAdventurersText != null)
-            goldForAdventurersText.text = "-";
-
+        RefreshGoldSplitTexts();
         gameObject.SetActive(true);
     }
 
@@ -69,10 +85,19 @@ public class QuestOfferSheetWindow : MonoBehaviour
 
         var state = QuestService.GetState(data, _questId);
         if (state == null) return;
-
+       
         state.status = QuestStatus.Received;
         state.questRank = _selectedRank;
+        
+        int total = state.tradedGold; // (позже будет после торга)
+        int percent = guildShareSlider != null ? Mathf.RoundToInt(guildShareSlider.value) : 10;
 
+        int guild = Mathf.RoundToInt(total * (percent / 100f));
+        int adv = total - guild;
+        
+        state.guildGold = guild;
+        state.adventurersGold = adv;
+        
         GameRepository.Save();
         Close();
     }
@@ -86,5 +111,16 @@ public class QuestOfferSheetWindow : MonoBehaviour
 
         if (rankValueText != null)
             rankValueText.text = rank.ToString();
+    }
+    
+    private void RefreshGoldSplitTexts()
+    {
+        int percent = guildShareSlider != null ? Mathf.RoundToInt(guildShareSlider.value) : 10;
+
+        int guild = Mathf.RoundToInt(_totalGoldForQuest * (percent / 100f));
+        int adv = _totalGoldForQuest - guild;
+
+        if (guildGoldText != null) guildGoldText.text = guild.ToString();
+        if (adventurersGoldText != null) adventurersGoldText.text = adv.ToString();
     }
 }

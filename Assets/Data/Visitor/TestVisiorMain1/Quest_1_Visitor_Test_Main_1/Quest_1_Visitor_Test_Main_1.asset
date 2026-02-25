@@ -20,6 +20,6 @@ MonoBehaviour:
   notifyHours: 5
   requiredReputation: 0
   requiredPower: 30
-  baseGold: 0
+  baseGold: 500
   dialogueTitles: Quest_1_Visitor_Test_Main_1
   unlockConditions: []

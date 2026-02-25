@@ -32,6 +32,9 @@ public class  QuestStateDTO
     public int tradedGold;   
     public Rank questRank = Rank.G;
     
+    public int guildGold;       
+    public int adventurersGold;
+    
     public QuestStatus status; 
     public float travelElapsedSeconds;
     public int executeHoursRemaining;
