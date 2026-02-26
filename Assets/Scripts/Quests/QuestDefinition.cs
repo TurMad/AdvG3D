@@ -21,7 +21,8 @@ public class QuestDefinition : ScriptableObject
     public int requiredPower = 0;
 
     [Header("Rewards")]
-    public int baseGold = 0;       
+    public int baseGold = 0; 
+    public int baseExp = 0;
     
     public string dialogueTitles;
     

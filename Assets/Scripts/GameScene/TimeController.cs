@@ -182,12 +182,28 @@ public class TimeController : MonoBehaviour
             data.missionReports = new List<MissionReportDTO>();
 
         int nextIndex = GetNextReportIndexForQuest(qs.id);
+        
+        int expEach = 0;
+
+        if (ids.Count > 0)
+        {
+            expEach = def.baseExp / ids.Count;
+
+            foreach (var id in ids)
+            {
+                var adv = data.adventurers.FirstOrDefault(a => a != null && a.id == id);
+                if (adv == null) continue;
+
+                ExperienceService.AddXp(adv, expEach); 
+            }
+        }
 
         var report = new MissionReportDTO
         {
             reportId = $"{qs.id}_{nextIndex}",
             questId = qs.id,
             result = result,
+            expPerAdventurer = expEach,
             requiredPower = requiredPower,
             partyPowerBase = partyPowerBase,
             partyPowerFinal = partyPowerFinal,

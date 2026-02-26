@@ -51,7 +51,10 @@ public class AdventurerDTO
 {
     public string id;
     
-    public int level = 1;
+    public int level;
+    
+    public int currentXp;
+    public int xpToNext;
     
     public int energy = 100;
 
@@ -80,6 +83,8 @@ public class MissionReportDTO
 
     public MissionResult result;
 
+    public int expPerAdventurer;
+    
     public int requiredPower;
     public int partyPowerBase;
     public int partyPowerFinal;

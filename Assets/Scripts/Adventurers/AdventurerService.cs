@@ -47,6 +47,7 @@ public static class AdventurerService
                 data.adventurers.Add(new AdventurerDTO
                 {
                     id = def.id,
+                    level = def.startLevel,
                     attack = def.baseAttack,
                     defense = def.baseDefense,
                     buff = def.baseBuff,
@@ -54,6 +55,14 @@ public static class AdventurerService
                     healing = def.baseHealing,
                     status = AdventurerStatus.NotReceived
                 });
+            }
+            foreach (var adv in data.adventurers)
+            {
+                if (adv == null) continue;
+
+                if (adv.level < 1) adv.level = 1;
+                if (adv.xpToNext <= 0)
+                    ExperienceService.RefreshXpToNext(adv);
             }
         }
     }
