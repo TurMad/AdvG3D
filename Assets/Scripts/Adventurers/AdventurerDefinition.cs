@@ -8,6 +8,8 @@ public class AdventurerDefinition : ScriptableObject
     public string id;
     public string displayName;
     
+    public Sprite portrait;
+    
     public int startLevel = 1;
     
     [Header("Attack Types")]

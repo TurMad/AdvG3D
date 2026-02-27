@@ -23,4 +23,10 @@ public class MainUIAndCameraController : MonoBehaviour
             var.SetActive(false);
         }
     }
+
+    public void GoToMap()
+    {
+        HideAllElements();
+        CameraController.Instance.ShowMapTop();
+    }
 }

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AdventurerDefinition
   id: Adv_Test_3
   displayName: Adv_Test_3
+  portrait: {fileID: 21300000, guid: 7095f4128b3c6f94489d2bb46fc49b3c, type: 3}
   startLevel: 2
   attackTypes: 
   baseAttack: 2

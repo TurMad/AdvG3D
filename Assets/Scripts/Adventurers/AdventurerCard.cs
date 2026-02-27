@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AdventurerCard : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class AdventurerCard : MonoBehaviour
         get => adventurerId;
         set => adventurerId = value;
     }
+    
+    [SerializeField] private Image portraitImage;
 
     [Header("Flip Root & Sides")]
     [SerializeField] private Transform flipRoot;   // пустой объект-контейнер
@@ -92,11 +95,13 @@ public class AdventurerCard : MonoBehaviour
     
     public void RefreshFromData(AdventurerDTO dto)
     {
+        var def = AdventurerService.GetDefinition(adventurerId);
         if (attackText  != null) attackText.text  = dto.attack.ToString();
         if (defenseText != null) defenseText.text = dto.defense.ToString();
         if (buffText    != null) buffText.text    = dto.buff.ToString();
         if (debuffText  != null) debuffText.text  = dto.debuff.ToString();
         if (healingText != null) healingText.text = dto.healing.ToString();
+        if (portraitImage != null) portraitImage.sprite = def.portrait;
         var rank = RankUtils.GetRankByLevel(dto.level);
         if (rankText != null) rankText.text = rank.ToString();
         if (energyText != null) energyText.text = dto.energy.ToString();

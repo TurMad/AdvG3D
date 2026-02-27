@@ -21,5 +21,6 @@ MonoBehaviour:
   requiredReputation: 0
   requiredPower: 30
   baseGold: 500
+  baseExp: 120
   dialogueTitles: Quest_1_Visitor_Test_Main_1
   unlockConditions: []

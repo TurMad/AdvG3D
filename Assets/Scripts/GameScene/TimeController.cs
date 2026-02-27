@@ -137,82 +137,15 @@ public class TimeController : MonoBehaviour
             return;
         qs.executeHoursRemaining = 0;
         
-        ResolveQuestAndWriteReport(qs);
+        int nextIndex = GetNextReportIndexForQuest(qs.id);
+        MissionResolutionService.ResolveAndWriteReport(qs, nextIndex);
+        
         qs.status = QuestStatus.InTravelBack;
 
         if (QuestPathsManager.Instance != null)
             QuestPathsManager.Instance.ResumePath(qs.id);
     }
     
-    void ResolveQuestAndWriteReport(QuestStateDTO qs)
-    {
-        var data = GameRepository.Data;
-        if (data == null) return;
-
-        var def = QuestService.GetDef(qs.id);
-        if (def == null) return;
-
-        // соберём assigned 1-5
-        var ids = new List<string>(5);
-        if (!string.IsNullOrEmpty(qs.assignedAdventurer1)) ids.Add(qs.assignedAdventurer1);
-        if (!string.IsNullOrEmpty(qs.assignedAdventurer2)) ids.Add(qs.assignedAdventurer2);
-        if (!string.IsNullOrEmpty(qs.assignedAdventurer3)) ids.Add(qs.assignedAdventurer3);
-        if (!string.IsNullOrEmpty(qs.assignedAdventurer4)) ids.Add(qs.assignedAdventurer4);
-        if (!string.IsNullOrEmpty(qs.assignedAdventurer5)) ids.Add(qs.assignedAdventurer5);
-
-        int partyPowerBase = 0;
-
-        if (data.adventurers != null && ids.Count > 0)
-        {
-            foreach (var id in ids)
-            {
-                var adv = data.adventurers.FirstOrDefault(a => a != null && a.id == id);
-                if (adv == null) continue;
-
-                partyPowerBase += CombatPowerCalculator.GetVisiblePower(adv);
-            }
-        }
-
-        int requiredPower = def.requiredPower;
-        int partyPowerFinal = partyPowerBase;
-
-        var result = partyPowerFinal >= requiredPower ? MissionResult.Success : MissionResult.Fail;
-
-        if (data.missionReports == null)
-            data.missionReports = new List<MissionReportDTO>();
-
-        int nextIndex = GetNextReportIndexForQuest(qs.id);
-        
-        int expEach = 0;
-
-        if (ids.Count > 0)
-        {
-            expEach = def.baseExp / ids.Count;
-
-            foreach (var id in ids)
-            {
-                var adv = data.adventurers.FirstOrDefault(a => a != null && a.id == id);
-                if (adv == null) continue;
-
-                ExperienceService.AddXp(adv, expEach); 
-            }
-        }
-
-        var report = new MissionReportDTO
-        {
-            reportId = $"{qs.id}_{nextIndex}",
-            questId = qs.id,
-            result = result,
-            expPerAdventurer = expEach,
-            requiredPower = requiredPower,
-            partyPowerBase = partyPowerBase,
-            partyPowerFinal = partyPowerFinal,
-            adventurerIds = ids
-        };
-
-        data.missionReports.Add(report);
-        GameRepository.Save();
-    }
     
     int GetNextReportIndexForQuest(string questId)
     {
