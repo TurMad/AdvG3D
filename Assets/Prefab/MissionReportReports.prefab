@@ -305,6 +305,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MissionReportItemUI
   resultText: {fileID: 7757737862750674301}
   partyPowerBaseText: {fileID: 6660869745983754950}
+  partyBalanceMultiplierText: {fileID: 5337630656151115553}
   partyPowerFinalText: {fileID: 7816164331029960995}
   adventurerImages:
   - {fileID: 1425922888152916452}
@@ -1686,7 +1687,7 @@ GameObject:
   - component: {fileID: 7825272145370732109}
   - component: {fileID: 1256199904567775163}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ResultPowerSection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1764,7 +1765,7 @@ GameObject:
   - component: {fileID: 1158678754518529554}
   - component: {fileID: 5337630656151115553}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: BalanceM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1817,7 +1818,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 1.44
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1901,7 +1902,7 @@ GameObject:
   - component: {fileID: 8367093107680806028}
   - component: {fileID: 4508677163080933376}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: balanceMulti
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1954,7 +1955,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Balance Multiplier
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2038,7 +2039,7 @@ GameObject:
   - component: {fileID: 7201273260239182259}
   - component: {fileID: 1708342939596139519}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: basePower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

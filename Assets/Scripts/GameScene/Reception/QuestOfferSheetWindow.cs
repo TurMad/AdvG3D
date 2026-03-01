@@ -49,7 +49,6 @@ public class QuestOfferSheetWindow : MonoBehaviour
         var state = QuestService.GetState(data, _questId);
         _totalGoldForQuest = state != null ? state.tradedGold : 0;
         
-        Debug.Log(_totalGoldForQuest);
         
         if (guildShareSlider != null)
         {
@@ -99,6 +98,8 @@ public class QuestOfferSheetWindow : MonoBehaviour
         state.adventurersGold = adv;
         
         GameRepository.Save();
+        if (QuestMapIconsManager.Instance != null)
+            QuestMapIconsManager.Instance.ShowIcon(_questId);
         Close();
     }
 

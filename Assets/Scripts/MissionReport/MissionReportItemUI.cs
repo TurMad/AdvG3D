@@ -8,6 +8,7 @@ public class MissionReportItemUI : MonoBehaviour
     [Header("Text")]
     [SerializeField] private TMP_Text resultText;
     [SerializeField] private TMP_Text partyPowerBaseText;
+    [SerializeField] private TMP_Text partyBalanceMultiplierText;
     [SerializeField] private TMP_Text partyPowerFinalText;
     
     [Header("Adventurers (5 slots)")]
@@ -29,9 +30,13 @@ public class MissionReportItemUI : MonoBehaviour
 
         if (partyPowerBaseText)
             partyPowerBaseText.text = report.partyPowerBase.ToString();
+        
+        if (partyBalanceMultiplierText)
+            partyBalanceMultiplierText.text = $"x{report.balanceMultiplier:0.00}";
 
         if (partyPowerFinalText)
             partyPowerFinalText.text = report.partyPowerFinal.ToString();
+        
         
         BindAdventurers(report);
     }

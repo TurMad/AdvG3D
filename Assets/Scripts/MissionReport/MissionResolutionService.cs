@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public static class MissionResolutionService
 {
@@ -14,6 +15,8 @@ public static class MissionResolutionService
         var ids = CollectAssignedIds(qs);
 
         int partyPowerBase = 0;
+        var selectedAdventurers = new List<AdventurerDTO>(ids.Count);
+
         if (data.adventurers != null && ids.Count > 0)
         {
             foreach (var id in ids)
@@ -21,27 +24,33 @@ public static class MissionResolutionService
                 var adv = data.adventurers.FirstOrDefault(a => a != null && a.id == id);
                 if (adv == null) continue;
 
+                selectedAdventurers.Add(adv);
                 partyPowerBase += CombatPowerCalculator.GetVisiblePower(adv);
             }
         }
 
         int requiredPower = def.requiredPower;
-        int partyPowerFinal = partyPowerBase;
+
+        // ===== Balance multiplier =====
+        // ВАЖНО: замени qs.questRank на реальное поле ранга в твоём QuestStateDTO
+        int balancePercent = 0;
+        if (selectedAdventurers.Count > 0)
+            balancePercent = PartyBalanceService.CalculateBalancePercent(selectedAdventurers, qs.questRank);
+
+        float balanceMultiplier = 1f + Mathf.Clamp01(balancePercent / 100f);
+
+        int partyPowerFinal = Mathf.RoundToInt(partyPowerBase * balanceMultiplier);
 
         var result = partyPowerFinal >= requiredPower ? MissionResult.Success : MissionResult.Fail;
 
+        // ===== EXP (только при успехе) =====
         int expEach = 0;
         if (result == MissionResult.Success && ids.Count > 0)
         {
             expEach = def.baseExp / ids.Count;
 
-            foreach (var id in ids)
-            {
-                var adv = data.adventurers.FirstOrDefault(a => a != null && a.id == id);
-                if (adv == null) continue;
-
+            foreach (var adv in selectedAdventurers)
                 ExperienceService.AddXp(adv, expEach);
-            }
         }
 
         if (data.missionReports == null)
@@ -56,6 +65,7 @@ public static class MissionResolutionService
             requiredPower = requiredPower,
             partyPowerBase = partyPowerBase,
             partyPowerFinal = partyPowerFinal,
+            balanceMultiplier = balanceMultiplier, // ✅ добавь это поле в DTO
             adventurerIds = ids
         };
 

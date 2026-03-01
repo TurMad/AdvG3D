@@ -9,12 +9,15 @@ public class QuestSendWindow : MonoBehaviour
     public string questId;
 
     [Header("Slots UI")]
-    [SerializeField] private Button[] slotButtons;        // 5 кнопок
-    [SerializeField] private Transform[] slotCardParents; // 5 точек под выбранные карты
+    [SerializeField] private Button[] slotButtons;        
+    [SerializeField] private Transform[] slotCardParents;
+    
+    [Header("Sliders")]
+    [SerializeField] private PartyBalanceUI balanceUI;
 
     [Header("Send")]
     [SerializeField] private Button sendButton;
-    
+
     [Header("In Progress Blocker")]
     [SerializeField] private GameObject inProgressBlocker;
 
@@ -33,6 +36,7 @@ public class QuestSendWindow : MonoBehaviour
         if (data == null) return;
 
         var questState = QuestService.GetState(data, questId);
+        balanceUI.Init(questState.questRank);
         if (questState == null) return;
 
         bool isInProgress =
@@ -40,44 +44,63 @@ public class QuestSendWindow : MonoBehaviour
             questState.status == QuestStatus.InExecution ||
             questState.status == QuestStatus.InTravelBack;
 
-        // 1) блокер
         if (inProgressBlocker != null)
             inProgressBlocker.SetActive(isInProgress);
 
-        // 2) если квест в процессе — восстанавливаем авантюристов по слотам
         if (isInProgress)
         {
             RestoreAssignedAdventurers(questState);
+            UpdateBalanceFromAssigned(questState);
         }
     }
-    
+
+    private void UpdateBalanceFromAssigned(QuestStateDTO questState)
+    {
+        if (balanceUI == null) return;
+
+        var data = GameRepository.Data;
+        if (data == null || data.adventurers == null) return;
+
+        var selected = new List<AdventurerDTO>();
+
+        AddIfExists(selected, questState.assignedAdventurer1);
+        AddIfExists(selected, questState.assignedAdventurer2);
+        AddIfExists(selected, questState.assignedAdventurer3);
+        AddIfExists(selected, questState.assignedAdventurer4);
+        AddIfExists(selected, questState.assignedAdventurer5);
+
+        balanceUI.UpdateMain(selected);
+
+        void AddIfExists(List<AdventurerDTO> list, string id)
+        {
+            if (string.IsNullOrEmpty(id)) return;
+            var adv = data.adventurers.FirstOrDefault(a => a != null && a.id == id);
+            if (adv != null) list.Add(adv);
+        }
+    }
+
     public void OnClick_OpenSlot(int slotIndex)
     {
         if (slotIndex < 0 || slotIndex >= 5) return;
 
-        // строго по очереди: доступен только следующий слот
+        // строго по очереди
         if (slotIndex != selectedAdventurerIds.Count)
             return;
 
-        if (CabinetUIController.Instance == null)
+        if (QuestSendUIController.Instance == null)
             return;
 
-        CabinetUIController.Instance.OpenAdventurerCarousel(this, slotIndex);
+        QuestSendUIController.Instance.OpenAdventurerCarousel(this, slotIndex);
     }
 
-    /// <summary>
-    /// Вызывается каруселью после выбора.
-    /// </summary>
     public void OnAdventurerChosen(int slotIndex, string adventurerId)
     {
         if (string.IsNullOrEmpty(adventurerId)) return;
         if (slotIndex < 0 || slotIndex >= 5) return;
 
-        // защита от дубля
         if (selectedAdventurerIds.Contains(adventurerId))
             return;
 
-        // слот должен быть следующий по порядку
         if (slotIndex != selectedAdventurerIds.Count)
             return;
 
@@ -85,11 +108,25 @@ public class QuestSendWindow : MonoBehaviour
         SpawnSelectedCard(slotIndex, adventurerId);
 
         UpdateSlotButtonsState();
+        UpdateBalanceUI();
     }
     
+    private void UpdateBalanceUI()
+    {
+        if (balanceUI == null) return;
+
+        var data = GameRepository.Data;
+
+        var selectedDtos = selectedAdventurerIds
+            .Select(id => data.adventurers.FirstOrDefault(a => a.id == id))
+            .Where(a => a != null)
+            .ToList();
+
+        balanceUI.UpdateMain(selectedDtos);
+    }
+
     private void RestoreAssignedAdventurers(QuestStateDTO questState)
     {
-        // отключаем интерактив слотов и кнопки отправки
         for (int i = 0; i < slotButtons.Length; i++)
         {
             if (slotButtons[i] != null)
@@ -99,7 +136,6 @@ public class QuestSendWindow : MonoBehaviour
         if (sendButton != null)
             sendButton.interactable = false;
 
-        // создаём карты в слотах по assignedAdventurer1-5
         TrySpawnAssigned(0, questState.assignedAdventurer1);
         TrySpawnAssigned(1, questState.assignedAdventurer2);
         TrySpawnAssigned(2, questState.assignedAdventurer3);
@@ -112,7 +148,6 @@ public class QuestSendWindow : MonoBehaviour
         if (string.IsNullOrEmpty(adventurerId)) return;
         if (slotIndex < 0 || slotIndex >= slotCardParents.Length) return;
 
-        // просто создаём карту (без изменения статусов)
         SpawnSelectedCard(slotIndex, adventurerId);
     }
 
@@ -124,8 +159,8 @@ public class QuestSendWindow : MonoBehaviour
         foreach (Transform child in parent)
             Destroy(child.gameObject);
 
-        var prefabs = CabinetUIController.Instance != null
-            ? CabinetUIController.Instance.GetAdventurerCardPrefabs()
+        var prefabs = QuestSendUIController.Instance != null
+            ? QuestSendUIController.Instance.GetAdventurerCardPrefabs()
             : null;
 
         if (prefabs == null || prefabs.Length == 0) return;
@@ -135,7 +170,6 @@ public class QuestSendWindow : MonoBehaviour
 
         var go = Instantiate(prefab.gameObject, parent);
 
-        // обновим статы
         var data = GameRepository.Data;
         if (data != null && data.adventurers != null)
         {
@@ -148,7 +182,6 @@ public class QuestSendWindow : MonoBehaviour
 
     private void UpdateSlotButtonsState()
     {
-        // 0..4: активен только "следующий" слот
         for (int i = 0; i < slotButtons.Length; i++)
         {
             if (slotButtons[i] == null) continue;
@@ -167,31 +200,33 @@ public class QuestSendWindow : MonoBehaviour
         var questState = QuestService.GetState(data, questId);
         if (questState == null) return;
 
-        // 1) квест в путь
         questState.status = QuestStatus.InTravelTo;
         questState.travelElapsedSeconds = 0f;
         questState.executeHoursRemaining = 0;
 
-        // 2) записываем 5 слотов
         questState.assignedAdventurer1 = selectedAdventurerIds.Count > 0 ? selectedAdventurerIds[0] : null;
         questState.assignedAdventurer2 = selectedAdventurerIds.Count > 1 ? selectedAdventurerIds[1] : null;
         questState.assignedAdventurer3 = selectedAdventurerIds.Count > 2 ? selectedAdventurerIds[2] : null;
         questState.assignedAdventurer4 = selectedAdventurerIds.Count > 3 ? selectedAdventurerIds[3] : null;
         questState.assignedAdventurer5 = selectedAdventurerIds.Count > 4 ? selectedAdventurerIds[4] : null;
 
-        // 3) авантюристы -> OnQuest
         foreach (var advId in selectedAdventurerIds)
         {
             var adv = data.adventurers.FirstOrDefault(a => a.id == advId);
             if (adv != null)
                 adv.status = AdventurerStatus.OnQuest;
         }
-        
+
         QuestPathsManager.Instance.ActivatePath(questId);
 
+        // скрываем иконку на карте, т.к. квест уже в пути
+        if (QuestMapIconsManager.Instance != null)
+            QuestMapIconsManager.Instance.HideIcon(questId);
+
         GameRepository.Save();
-        
-        inProgressBlocker.SetActive(true);
+
+        if (inProgressBlocker != null)
+            inProgressBlocker.SetActive(true);
     }
 
     public void ResetAndReleaseSelectedAdventurers()
@@ -217,7 +252,6 @@ public class QuestSendWindow : MonoBehaviour
     {
         selectedAdventurerIds.Clear();
 
-        // чистим спавненные карты под слотами
         for (int i = 0; i < slotCardParents.Length; i++)
         {
             if (slotCardParents[i] == null) continue;

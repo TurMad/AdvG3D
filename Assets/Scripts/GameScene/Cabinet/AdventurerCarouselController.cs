@@ -30,15 +30,10 @@ public class AdventurerCarouselController : MonoBehaviour
         if (panelRect == null)
             panelRect = GetComponent<RectTransform>();
 
-        // стартуем спрятанными (если объект активен в сцене)
         if (panelRect != null)
             panelRect.anchoredPosition = hiddenPosition;
     }
 
-    /// <summary>
-    /// Показывает карусель для конкретного окна и конкретного слота.
-    /// Вызывается из CabinetUIController.
-    /// </summary>
     public void Show(QuestSendWindow window, int slotIndex)
     {
         _activeWindow = window;
@@ -52,9 +47,6 @@ public class AdventurerCarouselController : MonoBehaviour
         AnimateTo(shownPosition, Ease.OutBack);
     }
 
-    /// <summary>
-    /// Скрывает карусель с анимацией и выключает объект после завершения.
-    /// </summary>
     public void Hide()
     {
         AnimateTo(hiddenPosition, Ease.InBack, () =>
@@ -88,7 +80,6 @@ public class AdventurerCarouselController : MonoBehaviour
             }
         }
 
-        // сообщаем окну
         if (_activeWindow != null && _activeSlotIndex >= 0)
             _activeWindow.OnAdventurerChosen(_activeSlotIndex, id);
 
@@ -119,8 +110,8 @@ public class AdventurerCarouselController : MonoBehaviour
         if (data == null || data.adventurers == null)
             return;
 
-        var prefabs = CabinetUIController.Instance != null
-            ? CabinetUIController.Instance.GetAdventurerCardPrefabs()
+        var prefabs = QuestSendUIController.Instance != null
+            ? QuestSendUIController.Instance.GetAdventurerCardPrefabs()
             : null;
 
         if (prefabs == null || prefabs.Length == 0)
@@ -190,7 +181,6 @@ public class AdventurerCarouselController : MonoBehaviour
             }
             else if (count == 2)
             {
-                // при двух: центр + правый (второй)
                 int other = (center == 0) ? 1 : 0;
 
                 if (i == other)
@@ -203,7 +193,7 @@ public class AdventurerCarouselController : MonoBehaviour
                     HideToPool(card);
                 }
             }
-            else // 3+
+            else
             {
                 if (i == left)
                 {
@@ -221,6 +211,30 @@ public class AdventurerCarouselController : MonoBehaviour
                 }
             }
         }
+        UpdateBalancePreview();
+    }
+    
+    private void UpdateBalancePreview()
+    {
+        if (_activeWindow == null) return;
+
+        if (_cards.Count == 0) return;
+
+        var centerCard = _cards[_currentIndex];
+        if (centerCard == null) return;
+
+        var data = GameRepository.Data;
+
+        var selected = _activeWindow.selectedAdventurerIds
+            .Select(id => data.adventurers.FirstOrDefault(a => a.id == id))
+            .Where(a => a != null)
+            .ToList();
+
+        var previewDto = data.adventurers
+            .FirstOrDefault(a => a.id == centerCard.AdventurerId);
+
+        _activeWindow.GetComponentInChildren<PartyBalanceUI>()
+            ?.UpdatePreview(selected, previewDto);
     }
 
     private void HideToPool(AdventurerCard card)
