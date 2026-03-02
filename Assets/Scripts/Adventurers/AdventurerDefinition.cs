@@ -21,4 +21,15 @@ public class AdventurerDefinition : ScriptableObject
     public int baseBuff;
     public int baseDebuff;
     public int baseHealing;
+    
+    [Header("Level Up Growth")]
+    public List<StatGrowthWeight> growth = new();
+}
+
+[System.Serializable]
+public class StatGrowthWeight
+{
+    public AdventurerStatType stat;
+    [Min(1)] public int weight = 1;
+    [Min(1)] public int amount = 1; 
 }

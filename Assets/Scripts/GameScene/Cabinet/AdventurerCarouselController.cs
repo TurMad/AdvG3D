@@ -52,6 +52,7 @@ public class AdventurerCarouselController : MonoBehaviour
         AnimateTo(hiddenPosition, Ease.InBack, () =>
         {
             ClearCards();
+            _activeWindow?.ClearMoralePreview();
             _activeWindow = null;
             _activeSlotIndex = -1;
 
@@ -212,6 +213,18 @@ public class AdventurerCarouselController : MonoBehaviour
             }
         }
         UpdateBalancePreview();
+        UpdateMoralePreview();
+    }
+    
+    private void UpdateMoralePreview()
+    {
+        if (_activeWindow == null) return;
+        if (_cards.Count == 0) return;
+
+        var centerCard = _cards[_currentIndex];
+        if (centerCard == null) return;
+
+        _activeWindow.PreviewMoraleWithCandidate(centerCard.AdventurerId);
     }
     
     private void UpdateBalancePreview()

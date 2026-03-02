@@ -306,6 +306,7 @@ MonoBehaviour:
   resultText: {fileID: 7757737862750674301}
   partyPowerBaseText: {fileID: 6660869745983754950}
   partyBalanceMultiplierText: {fileID: 5337630656151115553}
+  partyMoraleMultiplierText: {fileID: 1143112600853904087}
   partyPowerFinalText: {fileID: 7816164331029960995}
   adventurerImages:
   - {fileID: 1425922888152916452}
@@ -2679,7 +2680,7 @@ GameObject:
   - component: {fileID: 186468679935188726}
   - component: {fileID: 5215725608279389498}
   m_Layer: 5
-  m_Name: Text (TMP) (2)
+  m_Name: moraleMulti
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2732,7 +2733,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Morale Multiplier
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4106,7 +4107,7 @@ GameObject:
   - component: {fileID: 7073849919786886449}
   - component: {fileID: 1143112600853904087}
   m_Layer: 5
-  m_Name: Text (TMP) (2)
+  m_Name: MoraleM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4159,7 +4160,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 1.44
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

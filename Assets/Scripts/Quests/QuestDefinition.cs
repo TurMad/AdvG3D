@@ -24,6 +24,14 @@ public class QuestDefinition : ScriptableObject
     public int baseGold = 0; 
     public int baseExp = 0;
     
+    [Header("Quest Letter")]
+    public Sprite letterCanvasSprite;
+    [TextArea(3, 10)] public string successLetterText;
+    [TextArea(3, 10)] public string failLetterText;
+
+    [Header("Quest Impact")]
+    public int reputationChange = 0; 
+    
     public string dialogueTitles;
     
     public List<ConditionAsset> unlockConditions = new();

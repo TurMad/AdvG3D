@@ -35,6 +35,7 @@ public static class ExperienceService
         {
             adv.currentXp -= adv.xpToNext;
             adv.level++;
+            AdventurerLevelUpService.ApplyLevelUp(adv);
             RefreshXpToNext(adv);
         }
     }

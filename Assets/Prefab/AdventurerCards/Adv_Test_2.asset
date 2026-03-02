@@ -22,3 +22,10 @@ MonoBehaviour:
   baseBuff: 3
   baseDebuff: 1
   baseHealing: 1
+  growth:
+  - stat: 2
+    weight: 1
+    amount: 1
+  - stat: 3
+    weight: 1
+    amount: 1

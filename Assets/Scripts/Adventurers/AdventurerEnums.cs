@@ -5,3 +5,12 @@ public enum AdventurerStatus
     Selected,    
     OnQuest      
 }
+
+public enum AdventurerStatType
+{
+    Attack,
+    Defense,
+    Healing,
+    Buff,
+    Debuff
+}

@@ -9,11 +9,12 @@ public class QuestSendWindow : MonoBehaviour
     public string questId;
 
     [Header("Slots UI")]
-    [SerializeField] private Button[] slotButtons;        
+    [SerializeField] private Button[] slotButtons;
     [SerializeField] private Transform[] slotCardParents;
-    
+
     [Header("Sliders")]
     [SerializeField] private PartyBalanceUI balanceUI;
+    [SerializeField] private PartyMoraleUI moraleUI;
 
     [Header("Send")]
     [SerializeField] private Button sendButton;
@@ -28,6 +29,9 @@ public class QuestSendWindow : MonoBehaviour
         ResetSelectionVisualOnly();
         UpdateSlotButtonsState();
         CheckInProgress();
+
+        // Если это новое окно (не in progress), то просто обновим слайдеры в 0
+        RefreshSlidersFromSelected();
     }
 
     private void CheckInProgress()
@@ -36,8 +40,11 @@ public class QuestSendWindow : MonoBehaviour
         if (data == null) return;
 
         var questState = QuestService.GetState(data, questId);
-        balanceUI.Init(questState.questRank);
         if (questState == null) return;
+
+        // ✅ init rank
+        if (balanceUI != null)
+            balanceUI.Init(questState.questRank);
 
         bool isInProgress =
             questState.status == QuestStatus.InTravelTo ||
@@ -50,9 +57,14 @@ public class QuestSendWindow : MonoBehaviour
         if (isInProgress)
         {
             RestoreAssignedAdventurers(questState);
+
+            // ✅ после восстановления — пересчитать оба слайдера
             UpdateBalanceFromAssigned(questState);
+            UpdateMoraleFromAssigned(questState);
         }
     }
+
+    // ===================== BALANCE =====================
 
     private void UpdateBalanceFromAssigned(QuestStateDTO questState)
     {
@@ -78,6 +90,108 @@ public class QuestSendWindow : MonoBehaviour
             if (adv != null) list.Add(adv);
         }
     }
+
+    private void UpdateBalanceUI()
+    {
+        if (balanceUI == null) return;
+
+        var data = GameRepository.Data;
+        if (data == null || data.adventurers == null) return;
+
+        var selectedDtos = selectedAdventurerIds
+            .Select(id => data.adventurers.FirstOrDefault(a => a != null && a.id == id))
+            .Where(a => a != null)
+            .ToList();
+
+        balanceUI.UpdateMain(selectedDtos);
+    }
+
+    // ===================== MORALE =====================
+
+    private void UpdateMoraleFromAssigned(QuestStateDTO questState)
+    {
+        if (moraleUI == null) return;
+
+        var data = GameRepository.Data;
+        if (data == null || data.adventurers == null) return;
+
+        var selected = new List<AdventurerDTO>();
+
+        AddIfExists(selected, questState.assignedAdventurer1);
+        AddIfExists(selected, questState.assignedAdventurer2);
+        AddIfExists(selected, questState.assignedAdventurer3);
+        AddIfExists(selected, questState.assignedAdventurer4);
+        AddIfExists(selected, questState.assignedAdventurer5);
+
+        int morale = PartyMoraleService.CalculateMoralePercent(selected);
+        moraleUI.SetMainPercent(morale);
+
+        void AddIfExists(List<AdventurerDTO> list, string id)
+        {
+            if (string.IsNullOrEmpty(id)) return;
+            var adv = data.adventurers.FirstOrDefault(a => a != null && a.id == id);
+            if (adv != null) list.Add(adv);
+        }
+    }
+
+    private void UpdateMoraleUI()
+    {
+        if (moraleUI == null) return;
+
+        var data = GameRepository.Data;
+        if (data == null || data.adventurers == null) return;
+
+        var selectedDtos = selectedAdventurerIds
+            .Select(id => data.adventurers.FirstOrDefault(a => a != null && a.id == id))
+            .Where(a => a != null)
+            .ToList();
+
+        int morale = PartyMoraleService.CalculateMoralePercent(selectedDtos);
+        moraleUI.SetMainPercent(morale);
+    }
+
+    /// <summary>
+    /// Вызывается каруселью при смене центрального авантюриста.
+    /// </summary>
+    public void PreviewMoraleWithCandidate(string candidateAdventurerId)
+    {
+        if (moraleUI == null) return;
+
+        var data = GameRepository.Data;
+        if (data == null || data.adventurers == null) return;
+
+        // если кандидат уже выбран — показываем без превью
+        if (selectedAdventurerIds.Contains(candidateAdventurerId))
+        {
+            moraleUI.ClearPreview();
+            return;
+        }
+
+        var selectedDtos = selectedAdventurerIds
+            .Select(id => data.adventurers.FirstOrDefault(a => a != null && a.id == id))
+            .Where(a => a != null)
+            .ToList();
+
+        var cand = data.adventurers.FirstOrDefault(a => a != null && a.id == candidateAdventurerId);
+        if (cand == null)
+        {
+            moraleUI.ClearPreview();
+            return;
+        }
+
+        // preview = avg(selected + cand)
+        selectedDtos.Add(cand);
+        int previewMorale = PartyMoraleService.CalculateMoralePercent(selectedDtos);
+
+        moraleUI.SetPreviewPercent(previewMorale);
+    }
+
+    public void ClearMoralePreview()
+    {
+        moraleUI?.ClearPreview();
+    }
+
+    // ===================== SLOTS =====================
 
     public void OnClick_OpenSlot(int slotIndex)
     {
@@ -108,21 +222,13 @@ public class QuestSendWindow : MonoBehaviour
         SpawnSelectedCard(slotIndex, adventurerId);
 
         UpdateSlotButtonsState();
+
+        // ✅ пересчёт слайдеров
         UpdateBalanceUI();
-    }
-    
-    private void UpdateBalanceUI()
-    {
-        if (balanceUI == null) return;
+        UpdateMoraleUI();
 
-        var data = GameRepository.Data;
-
-        var selectedDtos = selectedAdventurerIds
-            .Select(id => data.adventurers.FirstOrDefault(a => a.id == id))
-            .Where(a => a != null)
-            .ToList();
-
-        balanceUI.UpdateMain(selectedDtos);
+        // ✅ превью сбросить, потому что main обновился
+        ClearMoralePreview();
     }
 
     private void RestoreAssignedAdventurers(QuestStateDTO questState)
@@ -246,6 +352,7 @@ public class QuestSendWindow : MonoBehaviour
 
         ResetSelectionVisualOnly();
         UpdateSlotButtonsState();
+        RefreshSlidersFromSelected();
     }
 
     private void ResetSelectionVisualOnly()
@@ -258,5 +365,13 @@ public class QuestSendWindow : MonoBehaviour
             foreach (Transform child in slotCardParents[i])
                 Destroy(child.gameObject);
         }
+    }
+
+    private void RefreshSlidersFromSelected()
+    {
+        // если никто не выбран — баланс и мораль будут 0 (как ты и говорил)
+        UpdateBalanceUI();
+        UpdateMoraleUI();
+        ClearMoralePreview();
     }
 }

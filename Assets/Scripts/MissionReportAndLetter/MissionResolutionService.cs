@@ -38,6 +38,9 @@ public static class MissionResolutionService
             balancePercent = PartyBalanceService.CalculateBalancePercent(selectedAdventurers, qs.questRank);
 
         float balanceMultiplier = 1f + Mathf.Clamp01(balancePercent / 100f);
+        
+        int moralePercent = PartyMoraleService.CalculateMoralePercent(selectedAdventurers);
+        float moraleMultiplier = PartyMoraleService.MoraleToMultiplier(moralePercent);
 
         int partyPowerFinal = Mathf.RoundToInt(partyPowerBase * balanceMultiplier);
 
@@ -65,7 +68,8 @@ public static class MissionResolutionService
             requiredPower = requiredPower,
             partyPowerBase = partyPowerBase,
             partyPowerFinal = partyPowerFinal,
-            balanceMultiplier = balanceMultiplier, // ✅ добавь это поле в DTO
+            balanceMultiplier = balanceMultiplier, 
+            moraleMultiplier = moraleMultiplier,
             adventurerIds = ids
         };
 
