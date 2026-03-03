@@ -101,6 +101,28 @@ MonoBehaviour:
     spritePortrait: {fileID: 21300000, guid: 05bfbb6ae5fd320458a3cfa08c4da0c5, type: 3}
     alternatePortraits: []
     spritePortraits: []
+  - id: 4
+    fields:
+    - title: Name
+      value: TestMain2
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Pictures
+      value: '[]'
+      type: 3
+      typeString: CustomFieldType_Files
+    - title: Description
+      value: 
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: IsPlayer
+      value: False
+      type: 2
+      typeString: CustomFieldType_Boolean
+    portrait: {fileID: 0}
+    spritePortrait: {fileID: 21300000, guid: 5ff28c8dff3cafc4ca3247c9540e7c4c, type: 3}
+    alternatePortraits: []
+    spritePortraits: []
   items: []
   locations: []
   variables:
@@ -142,7 +164,7 @@ MonoBehaviour:
       type: 5
       typeString: CustomFieldType_Actor
     - title: Conversant
-      value: 2
+      value: 4
       type: 5
       typeString: CustomFieldType_Actor
     overrideSettings:
@@ -188,7 +210,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
-        value: 0
+        value: 4
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
@@ -247,7 +269,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Actor
-        value: 2
+        value: 4
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
@@ -321,7 +343,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
-        value: 2
+        value: 4
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
@@ -329,7 +351,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: Hello
+        value: GO QUEST MF
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -337,7 +359,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: EventGuid
-        value: 
+        value: f7ed77fe-183a-4d48-b94d-167cff8536da
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
@@ -386,7 +408,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
-        value: 2
+        value: 4
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
@@ -433,8 +455,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 233.1413, y: 122.067535}
-    canvasZoom: 1.0899997
+    canvasScrollPosition: {x: 231.46721, y: 90.64431}
+    canvasZoom: 1.3599994
   - id: 2
     fields:
     - title: Title
@@ -971,7 +993,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 150
-        y: 373
+        y: 372.08258
         width: 160
         height: 30
     - id: 3
@@ -1036,8 +1058,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 1.0899999
+    canvasScrollPosition: {x: 53.194733, y: 23.68187}
+    canvasZoom: 1.5099995
   syncInfo:
     syncActors: 0
     syncItems: 0

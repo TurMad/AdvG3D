@@ -14,12 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VisitorDefinition
   id: Visitor_Test_1
   displayName: "\u0422\u0435\u0441\u0442\u043E\u0432\u044B\u0439 \u041F\u043E\u0441\u0435\u0442\u0438\u0442\u0435\u043B\u044C"
-  requiredReputation: 0
+  portrait: {fileID: 0}
   kind: 1
+  requiredReputation: 10
   conditions: []
-  dialogueTitles:
-  - Visitor_Test_1_D_1
-  - Visitor_Test_1_D_2
   questIds:
   - Quest_1_Visitor_Test_1
   - Quest_2_Visitor_Test_1

@@ -2888,6 +2888,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 560219753}
+  - {fileID: 969339793}
   m_Father: {fileID: 142180378}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &286053230
@@ -2904,6 +2905,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestMapIconsManager
   icons:
   - {fileID: 560219754}
+  - {fileID: 969339794}
 --- !u!1 &297074471
 GameObject:
   m_ObjectHideFlags: 0
@@ -3880,8 +3882,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1271223989}
-        m_TargetAssemblyTypeName: MissionReportsController, Assembly-CSharp
-        m_MethodName: OnClick_ShowReports
+        m_TargetAssemblyTypeName: InboxDocumentsController, Assembly-CSharp
+        m_MethodName: OnClick_Open
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5320,7 +5322,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 815448624}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1271223989}
+        m_TargetAssemblyTypeName: InboxDocumentsController, Assembly-CSharp
+        m_MethodName: OnClick_Next
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &815448624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5528,7 +5542,6 @@ MonoBehaviour:
   nextDayButton: {fileID: 360025978}
   startHour: 8
   endHour: 24
-  realSecondsPerGameHour: 2
 --- !u!4 &893477811
 Transform:
   m_ObjectHideFlags: 0
@@ -5757,6 +5770,83 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 957987048}
   m_CullTransparentMesh: 1
+--- !u!1001 &969339792
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 286053229}
+    m_Modifications:
+    - target: {fileID: 118196073498920027, guid: ef8221d411d08254db78035d6bef6da3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 168.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 118196073498920027, guid: ef8221d411d08254db78035d6bef6da3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 118196073498920027, guid: ef8221d411d08254db78035d6bef6da3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -223.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 118196073498920027, guid: ef8221d411d08254db78035d6bef6da3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 118196073498920027, guid: ef8221d411d08254db78035d6bef6da3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 118196073498920027, guid: ef8221d411d08254db78035d6bef6da3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 118196073498920027, guid: ef8221d411d08254db78035d6bef6da3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 118196073498920027, guid: ef8221d411d08254db78035d6bef6da3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 118196073498920027, guid: ef8221d411d08254db78035d6bef6da3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 118196073498920027, guid: ef8221d411d08254db78035d6bef6da3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 144458995651673846, guid: ef8221d411d08254db78035d6bef6da3, type: 3}
+      propertyPath: questId
+      value: Quest_1_Visitor_Test_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1748614187754288321, guid: ef8221d411d08254db78035d6bef6da3, type: 3}
+      propertyPath: m_Name
+      value: Quest_1_Visitor_Test_3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ef8221d411d08254db78035d6bef6da3, type: 3}
+--- !u!4 &969339793 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 118196073498920027, guid: ef8221d411d08254db78035d6bef6da3, type: 3}
+  m_PrefabInstance: {fileID: 969339792}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &969339794 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 144458995651673846, guid: ef8221d411d08254db78035d6bef6da3, type: 3}
+  m_PrefabInstance: {fileID: 969339792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ce6f2fd37bf8504f8f2b4313e7a0e51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestMapIconItem
 --- !u!1 &1041631839
 GameObject:
   m_ObjectHideFlags: 0
@@ -7151,7 +7241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56481ab4860b6ca4a9c7a1379bc48819, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestPath
-  pathId: Quest_2_Visitor_Test_1
+  pathId: Quest_1_Visitor_Test_3
   splineAnimate: {fileID: 1902737656}
 --- !u!1 &1271223985
 GameObject:
@@ -7209,8 +7299,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionReportsController
   panelRoot: {fileID: 770295365}
-  reportParent: {fileID: 1594246371}
-  reportItemPrefab: {fileID: 5756868024573195189, guid: 53361f197684bdb4eaac41ef3131ea6f, type: 3}
+  contentParent: {fileID: 1594246371}
+  reportPrefab: {fileID: 5756868024573195189, guid: 53361f197684bdb4eaac41ef3131ea6f, type: 3}
+  letterPrefab: {fileID: 7740009772344851752, guid: c96c93902c6582f45a81363df8039410, type: 3}
+  prevButton: {fileID: 1655585499}
+  nextButton: {fileID: 815448623}
 --- !u!1 &1295857137
 GameObject:
   m_ObjectHideFlags: 0
@@ -7914,7 +8007,7 @@ MonoBehaviour:
   paths:
   - {fileID: 241718925}
   - {fileID: 1231141290}
-  secondsPerGameHour: 2
+  secondsPerGameHour: 1
 --- !u!1 &1508248635
 GameObject:
   m_ObjectHideFlags: 0
@@ -8485,7 +8578,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1594246371}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: ContentPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9023,7 +9116,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1655585500}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1271223989}
+        m_TargetAssemblyTypeName: InboxDocumentsController, Assembly-CSharp
+        m_MethodName: OnClick_Prev
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1655585500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10586,7 +10691,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 118196073498920027, guid: d4a0542d4fd569849be76b84a8efa1f9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.15000153
+      value: 0.14999998
       objectReference: {fileID: 0}
     - target: {fileID: 118196073498920027, guid: d4a0542d4fd569849be76b84a8efa1f9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10643,6 +10748,10 @@ PrefabInstance:
     - target: {fileID: 2429046197103257780, guid: d4a0542d4fd569849be76b84a8efa1f9, type: 3}
       propertyPath: m_EasingMode
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903064797941720605, guid: d4a0542d4fd569849be76b84a8efa1f9, type: 3}
+      propertyPath: questId
+      value: Quest_1_Visitor_Test_3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10781,6 +10890,50 @@ MonoBehaviour:
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: Visitor_Test_Main_1
+            m_BoolArgument: 0
+          m_CallState: 2
+  - guid: 35ec6d99-36a8-4be2-a6e9-4ea7ae0a30ed
+    onExecute:
+      m_PersistentCalls:
+        m_Calls: []
+  - guid: f7ed77fe-183a-4d48-b94d-167cff8536da
+    onExecute:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1060679605}
+          m_TargetAssemblyTypeName: DialogueGameEvents, Assembly-CSharp
+          m_MethodName: RemoveFirstVisitorFromToday
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1060679605}
+          m_TargetAssemblyTypeName: DialogueGameEvents, Assembly-CSharp
+          m_MethodName: OpenQuestOfferSheetWindow
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Quest_1_Visitor_Test_3
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1060679605}
+          m_TargetAssemblyTypeName: DialogueGameEvents, Assembly-CSharp
+          m_MethodName: SetVisitorUnavailable
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Visitor_Test_3
             m_BoolArgument: 0
           m_CallState: 2
 --- !u!4 &1930153606

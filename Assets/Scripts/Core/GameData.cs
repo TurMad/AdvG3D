@@ -23,6 +23,8 @@ public class GameData
     public List<VisitorStateDTO> visitors = new();
     
     public List<MissionReportDTO> missionReports = new();
+    
+    public List<QuestLetterStateDTO> questLetters = new();
 }
 
 [Serializable]
@@ -67,7 +69,7 @@ public class AdventurerDTO
     public AdventurerStatus status;
 }
 
-[System.Serializable]
+[Serializable]
 public class VisitorStateDTO
 {
     public string id;            
@@ -82,6 +84,7 @@ public class MissionReportDTO
     public string questId;
 
     public MissionResult result;
+    public InboxItemStatus status;
 
     public int expPerAdventurer;
     
@@ -95,10 +98,27 @@ public class MissionReportDTO
     public List<string> adventurerIds = new();
 }
 
+[Serializable]
+public class QuestLetterStateDTO
+{
+    public string questId;
+    public MissionResult result;
+    public InboxItemStatus status;
+    public int hoursRemaining;  
+}
+
 public enum MissionResult
 {
     None = 0,
     Success = 1,
     Fail = 2
+}
+
+public enum InboxItemStatus
+{
+    None = 0,
+    Pending = 1,   
+    OnDesk = 2,    
+    Read = 3      
 }
 

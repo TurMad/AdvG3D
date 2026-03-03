@@ -7,7 +7,7 @@ public class QuestPathsManager : MonoBehaviour
     public static QuestPathsManager Instance;
 
     [SerializeField] QuestPath[] paths;
-    [SerializeField] private float secondsPerGameHour = 5f;
+    public float secondsPerGameHour = 5f;
 
     Dictionary<string, QuestPath> cachedPaths = new();
 

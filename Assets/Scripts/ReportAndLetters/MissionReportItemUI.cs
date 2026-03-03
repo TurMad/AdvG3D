@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class MissionReportItemUI : MonoBehaviour
 {
+    public string BoundReportId { get; private set; }
     [Header("Text")]
     [SerializeField] private TMP_Text resultText;
     [SerializeField] private TMP_Text partyPowerBaseText;
@@ -21,6 +22,7 @@ public class MissionReportItemUI : MonoBehaviour
     {
         if (report == null) return;
 
+        BoundReportId = report.reportId;
         if (resultText)
         {
             // result: 1 Success, 2 Fail (у тебя enum)

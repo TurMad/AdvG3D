@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class MissionResolutionService
 {
-    public static MissionReportDTO ResolveAndWriteReport(QuestStateDTO qs, int nextIndex)
+    public static MissionReportDTO ResolveAndWriteReport(QuestStateDTO qs)
     {
         var data = GameRepository.Data;
         if (data == null) return null;
@@ -56,24 +56,40 @@ public static class MissionResolutionService
                 ExperienceService.AddXp(adv, expEach);
         }
 
-        if (data.missionReports == null)
-            data.missionReports = new List<MissionReportDTO>();
+        var report = data.missionReports.FirstOrDefault(r => r != null && r.questId == qs.id);
+        bool isNew = report == null;
 
-        var report = new MissionReportDTO
-        {
-            reportId = $"{qs.id}_{nextIndex}",
-            questId = qs.id,
-            result = result,
-            expPerAdventurer = expEach,
-            requiredPower = requiredPower,
-            partyPowerBase = partyPowerBase,
-            partyPowerFinal = partyPowerFinal,
-            balanceMultiplier = balanceMultiplier, 
-            moraleMultiplier = moraleMultiplier,
-            adventurerIds = ids
-        };
+        if (isNew)
+            report = new MissionReportDTO();
+        
+        report.reportId = qs.id;
+        report.questId = qs.id;
+        report.result = result;
+        report.expPerAdventurer = expEach;
+        report.requiredPower = requiredPower;
+        report.partyPowerBase = partyPowerBase;
+        report.balanceMultiplier = balanceMultiplier;
+        report.partyPowerFinal = partyPowerFinal;
 
-        data.missionReports.Add(report);
+        report.adventurerIds = ids;
+
+        if (isNew)
+            data.missionReports.Add(report);
+        
+        var letter = data.questLetters.FirstOrDefault(l => l != null && l.questId == qs.id);
+        bool isNewLetter = letter == null;
+
+        if (isNewLetter)
+            letter = new QuestLetterStateDTO();
+
+        letter.questId = qs.id;
+        letter.result = result; 
+        letter.status = InboxItemStatus.Pending; 
+        letter.hoursRemaining = def.notifyHours; 
+        
+        if (isNewLetter)
+            data.questLetters.Add(letter);
+
         GameRepository.Save();
         return report;
     }

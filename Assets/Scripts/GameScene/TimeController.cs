@@ -15,7 +15,6 @@ public class TimeController : MonoBehaviour
     [Header("Config")]
     [SerializeField] int startHour = 8;
     [SerializeField] int endHour = 24;
-    [SerializeField] float realSecondsPerGameHour = 5f; 
 
     float timer;
     
@@ -44,7 +43,7 @@ public class TimeController : MonoBehaviour
         }
 
         timer += Time.deltaTime;
-        if (timer >= realSecondsPerGameHour)
+        if (timer >= QuestPathsManager.Instance.secondsPerGameHour)
         {
             timer = 0;
             GameRepository.Data.hour++;
@@ -111,14 +110,15 @@ public class TimeController : MonoBehaviour
             }
         }
         
+        QuestLettersService.TickOneHour();
     }
 
     void HandleTravelTo(QuestStateDTO qs)
     {
-        qs.travelElapsedSeconds += realSecondsPerGameHour;
+        qs.travelElapsedSeconds += QuestPathsManager.Instance.secondsPerGameHour;
         var def = QuestService.GetDef(qs.id);
         if (def == null) return;
-        float travelDurationSeconds = def.travelHours * realSecondsPerGameHour;
+        float travelDurationSeconds = def.travelHours * QuestPathsManager.Instance.secondsPerGameHour;
         if (qs.travelElapsedSeconds < travelDurationSeconds)
             return;
         qs.travelElapsedSeconds = travelDurationSeconds;
@@ -137,8 +137,7 @@ public class TimeController : MonoBehaviour
             return;
         qs.executeHoursRemaining = 0;
         
-        int nextIndex = GetNextReportIndexForQuest(qs.id);
-        MissionResolutionService.ResolveAndWriteReport(qs, nextIndex);
+        MissionResolutionService.ResolveAndWriteReport(qs);
         
         qs.status = QuestStatus.InTravelBack;
 
@@ -179,14 +178,14 @@ public class TimeController : MonoBehaviour
     {
         var def = QuestService.GetDef(qs.id);
         if (def == null || QuestPathsManager.Instance == null) return;
-        float travelDurationSeconds = def.travelHours * realSecondsPerGameHour;
-        qs.travelElapsedSeconds += realSecondsPerGameHour;
+        float travelDurationSeconds = def.travelHours * QuestPathsManager.Instance.secondsPerGameHour;
+        qs.travelElapsedSeconds += QuestPathsManager.Instance.secondsPerGameHour;
         float fullCycle = travelDurationSeconds * 2f;
         if (qs.travelElapsedSeconds < fullCycle) return;
         qs.travelElapsedSeconds = fullCycle;
         qs.status = QuestStatus.Completed;
         QuestPathsManager.Instance.DeactivatePath(qs.id);
-        if (MissionReportsController.Instance != null)
-            MissionReportsController.Instance.AddReportForQuest(qs.id);
+        if (InboxDocumentsController.Instance != null)
+            InboxDocumentsController.Instance.MarkLatestReportOnDesk(qs.id);
     }
 }
