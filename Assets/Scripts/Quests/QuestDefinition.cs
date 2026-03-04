@@ -19,6 +19,8 @@ public class QuestDefinition : ScriptableObject
     [Header("Requirements")]
     public int requiredReputation = 0; 
     public int requiredPower = 0;
+    public bool singleAttempt;   
+    public int deadlineTime ;
 
     [Header("Rewards")]
     public int baseGold = 0; 
@@ -31,6 +33,8 @@ public class QuestDefinition : ScriptableObject
 
     [Header("Quest Impact")]
     public int reputationChange = 0; 
+    
+    
     
     public string dialogueTitles;
     

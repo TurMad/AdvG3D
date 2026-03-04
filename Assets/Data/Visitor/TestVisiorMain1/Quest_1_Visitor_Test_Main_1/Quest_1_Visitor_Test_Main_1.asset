@@ -19,7 +19,9 @@ MonoBehaviour:
   executeHours: 2
   notifyHours: 5
   requiredReputation: 0
-  requiredPower: 30
+  requiredPower: 100
+  singleAttempt: 1
+  deadlineTime: 80
   baseGold: 500
   baseExp: 500
   letterCanvasSprite: {fileID: 0}

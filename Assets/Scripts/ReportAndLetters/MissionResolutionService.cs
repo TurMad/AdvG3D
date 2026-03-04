@@ -45,6 +45,13 @@ public static class MissionResolutionService
         int partyPowerFinal = Mathf.RoundToInt(partyPowerBase * balanceMultiplier);
 
         var result = partyPowerFinal >= requiredPower ? MissionResult.Success : MissionResult.Fail;
+        
+        bool allowRetry = false;
+
+        if (result == MissionResult.Fail && !def.singleAttempt)
+        {
+            allowRetry = true;
+        }
 
         // ===== EXP (только при успехе) =====
         int expEach = 0;
@@ -76,22 +83,65 @@ public static class MissionResolutionService
         if (isNew)
             data.missionReports.Add(report);
         
-        var letter = data.questLetters.FirstOrDefault(l => l != null && l.questId == qs.id);
-        bool isNewLetter = letter == null;
-
-        if (isNewLetter)
-            letter = new QuestLetterStateDTO();
-
-        letter.questId = qs.id;
-        letter.result = result; 
-        letter.status = InboxItemStatus.Pending; 
-        letter.hoursRemaining = def.notifyHours; 
         
-        if (isNewLetter)
-            data.questLetters.Add(letter);
+        bool createLetter = true;
+
+        if (result == MissionResult.Fail && !def.singleAttempt)
+        {
+            createLetter = false;
+        }
+
+        if (createLetter)
+        {
+            if (data.questLetters == null)
+                data.questLetters = new List<QuestLetterStateDTO>();
+
+            var letter = data.questLetters.FirstOrDefault(l => l != null && l.questId == qs.id);
+            bool isNewLetter = letter == null;
+
+            if (isNewLetter)
+                letter = new QuestLetterStateDTO();
+
+            letter.questId = qs.id;
+            letter.status = InboxItemStatus.Pending;
+            letter.hoursRemaining = def.notifyHours;
+            letter.result = result;
+
+            if (isNewLetter)
+                data.questLetters.Add(letter);
+        }
 
         GameRepository.Save();
         return report;
+    }
+    
+    public static void HandlePostTravelBack(QuestStateDTO qs)
+    {
+        var data = GameRepository.Data;
+        if (data == null) return;
+
+        var def = QuestService.GetDef(qs.id);
+        if (def == null) return;
+
+        var report = data.missionReports.FirstOrDefault(r => r != null && r.questId == qs.id);
+        if (report == null) return;
+
+        // retry логика
+        if (report.result == MissionResult.Fail && !def.singleAttempt)
+        {
+            qs.status = QuestStatus.Received;
+
+            qs.assignedAdventurer1 = null;
+            qs.assignedAdventurer2 = null;
+            qs.assignedAdventurer3 = null;
+            qs.assignedAdventurer4 = null;
+            qs.assignedAdventurer5 = null;
+
+            if (QuestMapIconsManager.Instance != null)
+                QuestMapIconsManager.Instance.ShowIcon(qs.id);
+
+            GameRepository.Save();
+        }
     }
 
     private static List<string> CollectAssignedIds(QuestStateDTO qs)

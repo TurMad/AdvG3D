@@ -187,5 +187,6 @@ public class TimeController : MonoBehaviour
         QuestPathsManager.Instance.DeactivatePath(qs.id);
         if (InboxDocumentsController.Instance != null)
             InboxDocumentsController.Instance.MarkLatestReportOnDesk(qs.id);
+        MissionResolutionService.HandlePostTravelBack(qs);
     }
 }
