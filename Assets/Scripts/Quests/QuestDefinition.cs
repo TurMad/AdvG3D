@@ -20,7 +20,7 @@ public class QuestDefinition : ScriptableObject
     public int requiredReputation = 0; 
     public int requiredPower = 0;
     public bool singleAttempt;   
-    public int deadlineTime ;
+    public int deadlineDays;
 
     [Header("Rewards")]
     public int baseGold = 0; 

@@ -119,6 +119,9 @@ public static class MissionResolutionService
     {
         var data = GameRepository.Data;
         if (data == null) return;
+        
+        if (qs.deadlineDaysRemaining <= 0)
+            return;
 
         var def = QuestService.GetDef(qs.id);
         if (def == null) return;

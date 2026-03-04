@@ -63,9 +63,11 @@ public class TimeController : MonoBehaviour
 
         GameRepository.Data.day++;
         GameRepository.Data.hour = startHour;
+        
+        QuestDeadlineService.ProcessNewDay();
 
         nextDayButton.interactable = false;
-        UpdateUI();
+        UpdateUI(); 
         QuestPathsManager.Instance.ResumeAllPaths();
         GameRepository.Save();
         if (VisitorManager.Instance != null)
@@ -136,8 +138,11 @@ public class TimeController : MonoBehaviour
         if (qs.executeHoursRemaining > 0)
             return;
         qs.executeHoursRemaining = 0;
-        
-        MissionResolutionService.ResolveAndWriteReport(qs);
+
+        if (qs.deadlineDaysRemaining != 0)
+        {
+            MissionResolutionService.ResolveAndWriteReport(qs); 
+        }
         
         qs.status = QuestStatus.InTravelBack;
 

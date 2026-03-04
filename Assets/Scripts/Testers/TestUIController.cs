@@ -87,7 +87,8 @@ public class TestUIController : MonoBehaviour
                 if (q == null) continue;
 
                 q.status = QuestStatus.NotReceived;
-
+                var def = QuestService.GetDef(q.id);
+                q.deadlineDaysRemaining = def.deadlineDays;
                 q.assignedAdventurer1 = null;
                 q.assignedAdventurer2 = null;
                 q.assignedAdventurer3 = null;

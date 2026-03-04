@@ -21,7 +21,7 @@ MonoBehaviour:
   requiredReputation: 0
   requiredPower: 100
   singleAttempt: 0
-  deadlineTime: 80
+  deadlineDays: 2
   baseGold: 100
   baseExp: 100
   letterCanvasSprite: {fileID: 0}

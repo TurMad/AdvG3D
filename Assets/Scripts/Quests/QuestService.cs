@@ -27,7 +27,7 @@ public static class QuestService
                 {
                     id = def.id,
                     tradedGold = def.baseGold,
-                    deadlineHoursRemaining =  def.deadlineTime,
+                    deadlineDaysRemaining =  def.deadlineDays,
                     questRank = Rank.G,
                     status = QuestStatus.NotReceived
                 });

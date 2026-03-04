@@ -40,7 +40,7 @@ public class  QuestStateDTO
     public QuestStatus status; 
     public float travelElapsedSeconds;
     public int executeHoursRemaining;
-    public int deadlineHoursRemaining;
+    public int deadlineDaysRemaining;
     
     public string assignedAdventurer1;
     public string assignedAdventurer2;
