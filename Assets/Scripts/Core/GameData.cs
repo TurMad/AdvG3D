@@ -94,6 +94,8 @@ public class MissionReportDTO
     public int partyPowerBase;
     public float balanceMultiplier;
     public float moraleMultiplier;
+    public int balancePowerBonus;
+    public int moralePowerBonus;
     public int partyPowerFinal;
 
     public List<string> adventurerIds = new();

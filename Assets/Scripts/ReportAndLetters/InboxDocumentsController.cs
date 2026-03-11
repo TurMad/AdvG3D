@@ -147,12 +147,12 @@ public class InboxDocumentsController : MonoBehaviour
         var letter = go.GetComponent<QuestLetterItemUI>();
         if (letter != null)
         {
-            // QuestLetterItemUI тоже хранит BoundQuestId
             var questId = letter.BoundQuestId;
 
             var dto = data.questLetters.FirstOrDefault(x => x != null && x.questId == questId && x.status == InboxItemStatus.OnDesk);
             if (dto != null)
             {
+                GameSceneController.ApplyQuestLetterEffects(dto);
                 dto.status = InboxItemStatus.Read;
                 GameRepository.Save();
             }
@@ -175,7 +175,6 @@ public class InboxDocumentsController : MonoBehaviour
             Destroy(contentParent.GetChild(i).gameObject);
     }
 
-    // Вызывается из TimeController когда квест вернулся домой
     public void MarkLatestReportOnDesk(string questId)
     {
         var data = GameRepository.Data;

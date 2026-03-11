@@ -38,11 +38,14 @@ public static class MissionResolutionService
             balancePercent = PartyBalanceService.CalculateBalancePercent(selectedAdventurers, qs.questRank);
 
         float balanceMultiplier = 1f + Mathf.Clamp01(balancePercent / 100f);
-        
+
         int moralePercent = PartyMoraleService.CalculateMoralePercent(selectedAdventurers);
         float moraleMultiplier = PartyMoraleService.MoraleToMultiplier(moralePercent);
 
-        int partyPowerFinal = Mathf.RoundToInt(partyPowerBase * balanceMultiplier);
+        int balancePowerBonus = Mathf.RoundToInt(partyPowerBase * (balanceMultiplier - 1f));
+        int moralePowerBonus = Mathf.RoundToInt(partyPowerBase * (moraleMultiplier - 1f));
+
+        int partyPowerFinal = partyPowerBase + balancePowerBonus + moralePowerBonus;
 
         var result = partyPowerFinal >= requiredPower ? MissionResult.Success : MissionResult.Fail;
         
@@ -75,7 +78,8 @@ public static class MissionResolutionService
         report.expPerAdventurer = expEach;
         report.requiredPower = requiredPower;
         report.partyPowerBase = partyPowerBase;
-        report.balanceMultiplier = balanceMultiplier;
+        report.balancePowerBonus = balancePowerBonus;
+        report.moralePowerBonus = moralePowerBonus;
         report.partyPowerFinal = partyPowerFinal;
 
         report.adventurerIds = ids;

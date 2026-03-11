@@ -35,10 +35,10 @@ public class MissionReportItemUI : MonoBehaviour
             partyPowerBaseText.text = report.partyPowerBase.ToString();
         
         if (partyBalanceMultiplierText)
-            partyBalanceMultiplierText.text = $"x{report.balanceMultiplier:0.00}";
+            partyBalanceMultiplierText.text = FormatSigned(report.balancePowerBonus);
         
         if (partyMoraleMultiplierText)
-            partyMoraleMultiplierText.text = $"x{report.moraleMultiplier:0.00}";
+            partyMoraleMultiplierText.text = FormatSigned(report.moralePowerBonus);
 
         if (partyPowerFinalText)
             partyPowerFinalText.text = report.partyPowerFinal.ToString();
@@ -102,5 +102,13 @@ public class MissionReportItemUI : MonoBehaviour
             if (xpAddedTexts != null && i < xpAddedTexts.Length && xpAddedTexts[i] != null)
                 xpAddedTexts[i].text = $"+{report.expPerAdventurer} exp";
         }
+    }
+    
+    private string FormatSigned(int value)
+    {
+        if (value > 0)
+            return $"+{value}";
+
+        return value.ToString();
     }
 }

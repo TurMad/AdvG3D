@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e3a1dbaad7b4da4aa0ee4335e01c952, type: 3}
   m_Name: DefaultGameData
   m_EditorClassIdentifier: Assembly-CSharp::GameDataPreset
-  gold: 100
+  gold: 0
+  reputation: 100
   guildLevel: 1
   guildExp: 0
   quests: []

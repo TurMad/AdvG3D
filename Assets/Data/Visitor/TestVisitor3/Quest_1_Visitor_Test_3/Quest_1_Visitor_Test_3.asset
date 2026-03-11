@@ -19,16 +19,16 @@ MonoBehaviour:
   executeHours: 1
   notifyHours: 5
   requiredReputation: 0
-  requiredPower: 100
-  singleAttempt: 0
-  deadlineDays: 2
-  baseGold: 100
+  requiredPower: 50
+  singleAttempt: 1
+  deadlineDays: 10
+  baseGold: 40
   baseExp: 100
   letterCanvasSprite: {fileID: 0}
   successLetterText: "\u041C\u043E\u043B\u043E\u0434\u0435\u0446 \u043A\u0432\u0435\u0441\u0442
     Quest_1_Visitor_Test_3"
   failLetterText: "\u043D\u0435 \u043D\u0443 \u0442\u0443\u0442 \u0437\u0430\u0442\u0443\u043F
     \u043A\u0432\u0435\u0441\u0442 Quest_1_Visitor_Test_3"
-  reputationChange: 0
+  reputationChange: 5
   dialogueTitles: Visitor_Test_1_D_1
   unlockConditions: []

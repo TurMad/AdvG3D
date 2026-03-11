@@ -1,101 +1,77 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
-using PixelCrushers.DialogueSystem;
-using PixelCrushers;
 
 public class GameSceneController : MonoBehaviour
 {
-    [Header("Language / Systems")]
-    [SerializeField] UILocalizationManager uiLocalizationManager;
-    [SerializeField] DialogueSystemController dialogueSystemController;
-    [SerializeField] string playerPrefsLangKey = "Language"; // тот же ключ что в меню
+    public static GameSceneController Instance { get; private set; }
 
     [Header("Header UI")]
-    [SerializeField] TMP_Text goldText;
-    [SerializeField] TMP_Text repText;
-    [SerializeField] TMP_Text dayText;
+    [SerializeField] private TMP_Text goldText;
+    [SerializeField] private TMP_Text repText;
 
-    [SerializeField] Button receptionButton;
-    [SerializeField] Button officeButton;
-    [SerializeField] Button endDayButton;
-
-    [Header("Rooms")]
-    [SerializeField] GameObject receptionPanel;
-    [SerializeField] GameObject officePanel;
-
-    // временные данные дня (потом заменим на реальные из сейва)
-    int currentDay = 1;
-    int currentGold = 0;
-    int currentRep = 0;
-
-    void Awake()
+    private void Awake()
     {
-        // навешиваем кнопки
-        if (receptionButton != null)
-            receptionButton.onClick.AddListener(ShowReception);
-
-        if (officeButton != null)
-            officeButton.onClick.AddListener(ShowOffice);
-
-        if (endDayButton != null)
-            endDayButton.onClick.AddListener(EndDay);
-    }
-
-    void Start()
-    {
-        // 1. вытащить язык, который игрок выбрал в меню
-        string langCode = PlayerPrefs.GetString(playerPrefsLangKey, "Default");
-
-        // 2. применить к локализации UI
-        if (uiLocalizationManager != null)
-        {
-            // вызови метод, который реально есть в UILocalizationManager:
-            // в твоей версии это может быть SetLanguage(...) или CurrentLanguage = ...
-            uiLocalizationManager.currentLanguage = langCode;
-        }
-
-        // 3. применить к Dialogue System
-        if (dialogueSystemController != null)
-        {
-            dialogueSystemController.displaySettings.localizationSettings.language = langCode;
-        }
-
-        // 4. показать комнату по умолчанию
-        ShowReception();
-
-        // 5. обновить хедерные тексты (день/золото/реп)
+        Instance = this;
         RefreshHeader();
     }
 
-    void RefreshHeader()
+    private void Start()
     {
+        RefreshHeader();
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
+    }
+
+    public void RefreshHeader()
+    {
+        var data = GameRepository.Data;
+        if (data == null) return;
+
         if (goldText != null)
-            goldText.text = currentGold.ToString();
+            goldText.text = data.gold.ToString();
 
         if (repText != null)
-            repText.text = currentRep.ToString();
-
-        if (dayText != null)
-            dayText.text = "Day " + currentDay; // позже локализуем через Localize UI, а здесь можно будет убрать прямой текст
+            repText.text = data.reputation.ToString();
     }
 
-    public void ShowReception()
+    public static void ApplyQuestLetterEffects(QuestLetterStateDTO letter)
     {
-        if (receptionPanel != null) receptionPanel.SetActive(true);
-        if (officePanel != null)    officePanel.SetActive(false);
+        var data = GameRepository.Data;
+        if (data == null || letter == null) return;
+
+        var def = QuestService.GetDef(letter.questId);
+        if (def == null) return;
+
+        var questState = QuestService.GetState(data, letter.questId);
+
+        if (letter.result == MissionResult.Success && questState != null && questState.guildGold != 0)
+            data.gold += questState.guildGold;
+
+        int reputationDelta = GetReputationDelta(def.reputationChange, letter.result);
+        if (reputationDelta != 0)
+            data.reputation += reputationDelta;
+
+        if (Instance != null)
+            Instance.RefreshHeader();
     }
 
-    public void ShowOffice()
+    private static int GetReputationDelta(int reputationChange, MissionResult result)
     {
-        if (receptionPanel != null) receptionPanel.SetActive(false);
-        if (officePanel != null)    officePanel.SetActive(true);
-    }
+        int absValue = Mathf.Abs(reputationChange);
 
-    public void EndDay()
-    {
-        // простой инкремент дня. потом сюда добавим: расчёт прибыли, спавн новых визиторов, и т.д.
-        currentDay += 1;
-        RefreshHeader();
+        if (absValue == 0)
+            return 0;
+
+        if (result == MissionResult.Success)
+            return absValue;
+
+        if (result == MissionResult.Fail)
+            return -absValue;
+
+        return 0;
     }
 }
