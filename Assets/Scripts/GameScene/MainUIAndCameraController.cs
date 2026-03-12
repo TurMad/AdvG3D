@@ -1,9 +1,15 @@
+using System;
 using UnityEngine;
 
 public class MainUIAndCameraController : MonoBehaviour
 {
     [SerializeField] private GameObject[] roomsAndUIElements;
-    
+
+    private void Start()
+    {
+        ShowCabinet();
+    }
+
     public void ShowReception()
     {
         HideAllElements();

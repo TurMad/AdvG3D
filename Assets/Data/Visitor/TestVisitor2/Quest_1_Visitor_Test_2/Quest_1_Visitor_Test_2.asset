@@ -14,9 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestDefinition
   id: Quest_1_Visitor_Test_2
   title: "\u041A\u0432\u0435\u0441\u0442 1 2 \u043F\u043E\u0441."
+  icon: {fileID: 0}
   travelHours: 10
   executeHours: 1
   notifyHours: 1
-  requiredReputation: 0
+  requiredReputation: 44
+  requiredPower: 0
+  singleAttempt: 0
+  deadlineDays: 0
   baseGold: 100
+  baseExp: 0
+  letterCanvasSprite: {fileID: 0}
+  successLetterText: 
+  failLetterText: 
+  reputationChange: 0
+  dialogueTitles: 
   unlockConditions: []
