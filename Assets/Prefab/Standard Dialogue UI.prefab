@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 11419934}
   - component: {fileID: 11457590}
   - component: {fileID: 11496426}
+  - component: {fileID: 1357599715289086806}
   m_Layer: 5
   m_Name: Response Button Template
   m_TagString: Untagged
@@ -139,7 +140,33 @@ MonoBehaviour:
     m_uiText: {fileID: 0}
     m_textMeshProUGUI: {fileID: 732541484650220380}
   setLabelColor: 1
-  defaultColor: {r: 0, g: 0, b: 0, a: 1}
+  defaultColor: {r: 0.31764707, g: 0.21176471, b: 0.13725491, a: 1}
+--- !u!114 &1357599715289086806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 102782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
+  m_Padding:
+    m_Left: 30
+    m_Right: 30
+    m_Top: 10
+    m_Bottom: 10
+  m_ChildAlignment: 3
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &112744
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,8 +1213,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 681.73413, y: -674.52405}
-  m_SizeDelta: {x: 1347.469, y: 458.793}
+  m_AnchoredPosition: {x: 520.01, y: -470.0076}
+  m_SizeDelta: {x: 904.29, y: 243.9853}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &22256676
 CanvasRenderer:
@@ -1242,10 +1269,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 20
+    m_Top: 0
     m_Bottom: 20
   m_ChildAlignment: 1
-  m_Spacing: 50
+  m_Spacing: 30
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -1360,7 +1387,7 @@ GameObject:
   - component: {fileID: 22246810}
   - component: {fileID: 7484462846780702250}
   - component: {fileID: 11492054}
-  - component: {fileID: 11432794}
+  - component: {fileID: 3754980039646696283}
   m_Layer: 5
   m_Name: Subtitle Text
   m_TagString: Untagged
@@ -1384,8 +1411,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 711.6798, y: -305.14}
-  m_SizeDelta: {x: 1287.62, y: 279.971}
+  m_AnchoredPosition: {x: 520.01355, y: -256.58435}
+  m_SizeDelta: {x: 904.2875, y: 182.8596}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &22246810
 CanvasRenderer:
@@ -1502,7 +1529,7 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
---- !u!114 &11432794
+--- !u!114 &3754980039646696283
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1511,9 +1538,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 153682}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf59e9c601bf0354baa2d3daac7d491e, type: 3}
+  m_Script: {fileID: 11500000, guid: 1360375efe462cd4ab520d1661206035, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp-firstpass::PixelCrushers.DialogueSystem.Wrappers.TextMeshProTypewriterEffect
   rightToLeft: 0
   charactersPerSecond: 50
   audioClip: {fileID: 0}
@@ -1529,32 +1556,19 @@ MonoBehaviour:
   fullPauseDuration: 1
   quarterPauseDuration: 0.25
   removeDuplicateTypewriterEffects: 1
-  playOnEnable: 0
+  playOnEnable: 1
   waitOneFrameBeforeStarting: 0
   stopOnConversationEnd: 0
   autoScrollSettings:
     autoScrollEnabled: 0
     scrollRect: {fileID: 0}
     scrollbarEnabler: {fileID: 0}
-    sizerText: {fileID: 0}
   onBegin:
     m_PersistentCalls:
       m_Calls: []
   onCharacter:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11474070}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: set_verticalNormalizedPosition
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -1734,7 +1748,7 @@ RectTransform:
   m_GameObject: {fileID: 157300}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 22437772}
@@ -1743,8 +1757,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -107}
-  m_SizeDelta: {x: 2013, y: 919}
+  m_AnchoredPosition: {x: -120, y: -178}
+  m_SizeDelta: {x: 1360, y: 620}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &22292856
 CanvasRenderer:
@@ -1976,7 +1990,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1534, y: 864}
+  m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &11452524
 MonoBehaviour:
@@ -2517,7 +2531,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 622.1, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &11465324
@@ -2560,7 +2574,7 @@ MonoBehaviour:
     m_textMeshProUGUI: {fileID: 509370902032934602}
   subtitleText:
     m_uiText: {fileID: 0}
-    m_textMeshProUGUI: {fileID: 0}
+    m_textMeshProUGUI: {fileID: 7484462846780702250}
   addSpeakerName: 0
   addSpeakerNameFormat: '{0}: {1}'
   accumulateText: 1
@@ -2615,15 +2629,15 @@ RectTransform:
   m_GameObject: {fileID: 2202873527532001180}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 22402086}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -298, y: 62}
-  m_SizeDelta: {x: 619, y: 795}
+  m_AnchoredPosition: {x: 327, y: 47}
+  m_SizeDelta: {x: 418, y: 537}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1778640066813824969
 CanvasRenderer:
@@ -2908,7 +2922,7 @@ RectTransform:
   m_Father: {fileID: 22453294}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2967,8 +2981,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

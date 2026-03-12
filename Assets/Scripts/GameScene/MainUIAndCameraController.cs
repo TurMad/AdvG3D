@@ -14,6 +14,7 @@ public class MainUIAndCameraController : MonoBehaviour
     {
         HideAllElements();
         roomsAndUIElements[0].SetActive(true);
+        roomsAndUIElements[2].SetActive(true);
     }
 
     public void ShowCabinet()
