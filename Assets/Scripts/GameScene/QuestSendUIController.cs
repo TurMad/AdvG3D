@@ -6,8 +6,8 @@ public class QuestSendUIController : MonoBehaviour
     public static QuestSendUIController Instance { get; private set; }
 
     [Header("Adventurer Carousel")]
-    [SerializeField] private AdventurerCarouselController cabinetAdventurerCarousel;
-    [SerializeField] private AdventurerCarouselController mapAdventurerCarousel;
+    [SerializeField] private CardViewController cabinetCardView;
+    [SerializeField] private CardViewController mapCardView;
 
     [Header("Prefabs")]
     [SerializeField] private GameObject questSendWindowPrefab;
@@ -56,13 +56,13 @@ public class QuestSendUIController : MonoBehaviour
         carousel.Hide();
     }
     
-    private AdventurerCarouselController GetActiveCarousel()
+    private CardViewController GetActiveCarousel()
     {
         // если открыта MAP панель — используем map карусель, иначе cabinet
         if (mapWindowsContainer != null && mapWindowsContainer.activeInHierarchy)
-            return mapAdventurerCarousel;
+            return mapCardView;
 
-        return cabinetAdventurerCarousel;
+        return cabinetCardView;
     }
 
     // ===== CABINET: list of quests (Received + InProgress) =====
